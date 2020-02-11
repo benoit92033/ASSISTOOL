@@ -7,6 +7,18 @@
 </head>
 <body>
     Pour ouvrir un ticket : envoyé un sms au 0625351478
+
+
+
+    <?php
+        try{
+            $pdo = new PDO('mysql:host=86.200.70.81:3307;dbname=tickets;charset=utf8', 'root', 'CAxKtT5y');
+        }
+        catch(Exception $e) {
+            echo 'Exception reçue : ',  $e->getMessage(), "<br>";
+            echo date("m/d/Y G:i:s");
+        }
+        ?>
     
 </body>
 </html>
