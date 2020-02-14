@@ -1,5 +1,7 @@
 const express = require('express')
 const consola = require('consola')
+const session = require('express-session')
+const helmet = require('helmet')
 const { Nuxt, Builder } = require('nuxt')
 const app = express()
 
