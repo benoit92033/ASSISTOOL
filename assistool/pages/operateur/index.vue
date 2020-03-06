@@ -1,13 +1,13 @@
 <style>
   .tickets {
-    background-color: grey;
+    background-color: rgb(40,40,40);
     margin: 10px;
     padding: 10px;
     border-radius: 10px;
   }
+
   .tickets p {
-    padding: 10px 20px 10px 20px;
-    border-radius: 10px;
+    margin: 10px;
   }
 </style>
 
@@ -28,9 +28,9 @@
       <div v-for="ticket in tickets" v-bind:key="ticket" class="tickets">
         <div class="d-flex">
           <p>{{ ticket.title }}</p>
-          <p v-if="ticket.priority == 0" style="background-color: green;">Oui</p>
-          <p v-else-if="ticket.priority == 1" style="background-color: yellow;">Urgent</p>
-          <p v-else style="background-color: red;">Très Urgent</p>
+          <v-btn v-if="ticket.priority == 0" small style="margin: 10px; pointer-events: none;" color="success">Pas urgent</v-btn>
+          <v-btn v-else-if="ticket.priority == 1" small style="margin: 10px; pointer-events: none;" color="warning">Urgent</v-btn>
+          <v-btn v-else small style="margin: 10px; pointer-events: none;" color="error">Très Urgent</v-btn>
         </div>
         <v-btn style="margin: 10px;" large color="primary" @click="commenter(ticket.id)">Commenter</v-btn>
         <v-btn style="margin: 10px;" large color="primary" @click="traiter(ticket.id)">Traiter</v-btn>
