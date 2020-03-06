@@ -1,7 +1,13 @@
+<style>
+  .tickets td {
+    padding: 10px;
+  }
+</style>
+
 <template>
   <v-layout>
     <v-flex>
-      <v-container fluid class="add-form">
+      <v-container fluid>
         <v-form ref="form" v-model="valid" lazy-validation >
           <v-flex class="d-flex">
             <v-text-field v-model="recherche" label="Rechercher un ticket"></v-text-field>
@@ -10,8 +16,8 @@
         </v-form>
       </v-container>
 
-      <h1>Tickets à traiter</h1>
-      <table>
+      <h1 class="display-1 font-weight-light">Tickets à traiter</h1>
+      <table class="tickets">
         <tbody>
           <tr v-for="ticket in tickets" v-bind:key="ticket">
             <td>{{ ticket.title }}</td>
