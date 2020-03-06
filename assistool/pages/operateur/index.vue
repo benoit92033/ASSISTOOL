@@ -1,6 +1,13 @@
 <style>
-  .tickets td {
+  .tickets {
+    background-color: grey;
+    margin: 10px;
     padding: 10px;
+    border-radius: 10px;
+  }
+  .tickets p {
+    padding: 10px 20px 10px 20px;
+    border-radius: 10px;
   }
 </style>
 
@@ -17,19 +24,19 @@
       </v-container>
 
       <h1 class="display-1 font-weight-light">Tickets à traiter</h1>
-      <table class="tickets">
-        <tbody>
-          <tr v-for="ticket in tickets" v-bind:key="ticket">
-            <td>{{ ticket.title }}</td>
-            <td>{{ ticket.priority }}</td>
-            <td><v-btn color="primary" @click="commenter(ticket.id)">Commenter</v-btn></td>
-            <td><v-btn color="primary" @click="traiter(ticket.id)">Traiter</v-btn></td>
-            <td><v-btn color="error" @click="fermer(ticket.id)">Fermer</v-btn></td>
-            <td><v-btn color="warning" @click="transferer(ticket.id)">Transferer</v-btn></td>
 
-          </tr>
-        </tbody>
-      </table>
+      <div v-for="ticket in tickets" v-bind:key="ticket" class="tickets">
+        <div class="d-flex">
+          <p>{{ ticket.title }}</p>
+          <p v-if="ticket.priority == 0" style="background-color: green;">Oui</p>
+          <p v-else-if="ticket.priority == 1" style="background-color: yellow;">Urgent</p>
+          <p v-else style="background-color: red;">Très Urgent</p>
+        </div>
+        <v-btn style="margin: 10px;" large color="primary" @click="commenter(ticket.id)">Commenter</v-btn>
+        <v-btn style="margin: 10px;" large color="primary" @click="traiter(ticket.id)">Traiter</v-btn>
+        <v-btn style="margin: 10px;" large color="error" @click="fermer(ticket.id)">Fermer</v-btn>
+        <v-btn style="margin: 10px;" large color="warning" @click="transferer(ticket.id)">Transferer</v-btn>
+      </div>
 
     </v-flex>
   </v-layout>
