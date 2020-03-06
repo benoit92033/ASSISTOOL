@@ -1,13 +1,13 @@
 <style>
   .tickets {
     background-color: rgb(40,40,40);
-    margin: 10px;
+    margin: 20px 10px 20px 10px;
     padding: 10px;
     border-radius: 10px;
   }
 
-  .tickets p {
-    margin: 10px;
+  .tickets h2 {
+    margin: 5px 5px 20px 5px;
   }
 </style>
 
@@ -23,19 +23,25 @@
         </v-form>
       </v-container>
 
-      <h1 class="display-1 font-weight-light">Tickets à traiter</h1>
+      <h1 class="display-2 font-weight-light">Tickets à traiter</h1>
 
       <div v-for="ticket in tickets" v-bind:key="ticket" class="tickets">
         <div class="d-flex">
-          <p>{{ ticket.title }}</p>
-          <v-btn v-if="ticket.priority == 0" small style="margin: 10px; pointer-events: none;" color="success">Pas urgent</v-btn>
-          <v-btn v-else-if="ticket.priority == 1" small style="margin: 10px; pointer-events: none;" color="warning">Urgent</v-btn>
-          <v-btn v-else small style="margin: 10px; pointer-events: none;" color="error">Très Urgent</v-btn>
+          <h2 class="font-weight-light">{{ ticket.title }}</h2>
+          <v-btn v-if="ticket.priority == 0" depressed small style="margin: 10px; pointer-events: none;" color="success">Pas urgent</v-btn>
+          <v-btn v-else-if="ticket.priority == 1" depressed small style="margin: 10px; pointer-events: none;" color="warning">Urgent</v-btn>
+          <v-btn v-else depressed small style="margin: 10px; pointer-events: none;" color="error">Très Urgent</v-btn>
         </div>
-        <v-btn style="margin: 10px;" large color="primary" @click="commenter(ticket.id)">Commenter</v-btn>
-        <v-btn style="margin: 10px;" large color="primary" @click="traiter(ticket.id)">Traiter</v-btn>
-        <v-btn style="margin: 10px;" large color="error" @click="fermer(ticket.id)">Fermer</v-btn>
-        <v-btn style="margin: 10px;" large color="warning" @click="transferer(ticket.id)">Transferer</v-btn>
+        <div>
+          <p>Description du ticjket du coup j'ecris des choses mais qui ne veulent rien dire : patate, fillon, phillipe risoli, marinade, histoire.</p>
+        </div>
+        <div>
+          <img src="v.png">
+        </div>
+        <v-btn style="margin: 10px;" rounded large color="primary" @click="commenter(ticket.id)">Commenter</v-btn>
+        <v-btn style="margin: 10px;" rounded large color="primary" @click="traiter(ticket.id)">Traiter</v-btn>
+        <v-btn style="margin: 10px;" rounded large color="error" @click="fermer(ticket.id)">Fermer</v-btn>
+        <v-btn style="margin: 10px;" rounded large color="warning" @click="transferer(ticket.id)">Transferer</v-btn>
       </div>
 
     </v-flex>
