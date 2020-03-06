@@ -11,6 +11,19 @@
       </v-container>
 
       <h1>Tickets à traiter</h1>
+      <table>
+        <tbody>
+          <tr v-for="ticket in tickets" v-bind:key="ticket">
+            <td>{{ ticket.title }}</td>
+            <td>{{ ticket.priority }}</td>
+            <td><v-btn color="primary" @click="commenter(ticket.id)">Commenter</v-btn></td>
+            <td><v-btn color="primary" @click="traiter(ticket.id)">Traiter</v-btn></td>
+            <td><v-btn color="error" @click="fermer(ticket.id)">Fermer</v-btn></td>
+            <td><v-btn color="warning" @click="transferer(ticket.id)">Transferer</v-btn></td>
+
+          </tr>
+        </tbody>
+      </table>
 
     </v-flex>
   </v-layout>
@@ -27,7 +40,23 @@
   
       methods: {
         search () {
-          //oui
+          console.log(this.recherche)
+        },
+        commenter (idTicket) {
+          console.log("commenter")
+          console.log(idTicket)
+        },
+        traiter (idTicket) {
+          console.log("traiter")
+          console.log(idTicket)
+        },
+        fermer (idTicket) {
+          console.log("fermer")
+          console.log(idTicket)
+        },
+        transferer (idTicket) {
+          console.log("transferer")
+          console.log(idTicket)
         },
       },
     }
