@@ -2,8 +2,10 @@ const express = require('express')
 const consola = require('consola')
 const session = require('express-session')
 const helmet = require('helmet')
+const mysql = require('mysql')
 const { Nuxt, Builder } = require('nuxt')
 const app = express()
+require('dotenv').config();
 
 //app.use(HELMET());
 
@@ -35,3 +37,23 @@ async function start () {
   })
 }
 start()
+
+console.log(process.env.DB_HOST)
+
+var con = mysql.createConnection({
+  port:3306,
+  host: process.env.DB_HOST,
+  user: process.env.DB_USER,
+  password: process.env.DB_PASS,
+  database: process.env.DB_NAME
+}); 
+
+con.connect(function(err){
+  if(err) throw err;
+});
+/*
+con.query('SELECT * from user', function(err, rows, fields) {
+    if(err) console.log(err);
+    console.log('The solution is: ', rows);
+    con.end();
+});*/
