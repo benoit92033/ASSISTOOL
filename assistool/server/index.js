@@ -7,11 +7,6 @@ const { Nuxt, Builder } = require('nuxt')
 const app = express()
 require('dotenv').config();
 
-<<<<<<< HEAD
-=======
-
-const app = express()
->>>>>>> bd5806b1694f0441e7a9e77f33d8beedf0caaf9d
 
 // Import and Set Nuxt.js options
 const config = require('../nuxt.config.js')
@@ -40,28 +35,29 @@ async function start () {
     badge: true
   })
 
-
-<<<<<<< HEAD
-  // SESSION
-
-  var loginPage = (req, res, next) => {
-    console.log("login")
-    console.log(this.$store)
-  }
-
-  var checkLoggedIn = (req, res, next) => req.session.loggedIn ? next() : res.redirect("/login");
-
-
-  // CHECK ROUTES
-  app.use("/login", loginPage);
-  app.use("/tickets2", checkLoggedIn);
-=======
-
->>>>>>> bd5806b1694f0441e7a9e77f33d8beedf0caaf9d
 }
+
 start()
 
-console.log(process.env.DB_HOST)
+// console.log("after start")
+
+// app.use(session({
+//   secret: 'keyboard cat',
+//   isLogged: false,
+//   cookie: { secure: true }
+// }))
+
+// var loginPage = (req, res, next) => {
+//   console.log("login")
+//   console.log(req.session.isLogged);
+// }
+
+// var checkLoggedIn = (req, res, next) => req.session.isLogged ? next() : res.redirect("/login");
+
+// // CHECK ROUTES
+// app.use("/login", loginPage);
+// app.use("/tickets2", checkLoggedIn);
+
 /*
 var con = mysql.createConnection({
   port:process.env.DB_PORT,

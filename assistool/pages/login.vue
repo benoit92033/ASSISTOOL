@@ -10,15 +10,14 @@
       
         <v-container fluid class="login-form">
 
-          <Notification :message="error" v-if="error"/>
-
-            <v-form ref="form" v-model="valid" lazy-validation >
+            <v-form ref="form" v-model="valid" lazy-validation>
 
                 <v-text-field v-model="email" :rules="emailRules" label="E-mail" required></v-text-field>
                 <v-text-field v-model="password" :type="'password'" label="Mot de passe" required></v-text-field>
 
-                <v-btn :disabled="!valid" color="success" @click="validate">Valider</v-btn>
+                <v-btn :disabled="!valid" color="success" @click="login">Valider</v-btn>
                 <v-btn color="error" @click="reset">Annuler</v-btn>
+                <v-btn v-if="$store.state.authUser[0].isLogged" color="warning" nuxt to="/tickets2" >Acceder aux tickets</v-btn>
 
             </v-form>
 
@@ -47,20 +46,37 @@
 
     methods: {
 
-      validate () {
+      async login () {
+      try {
 
-        if (this.$refs.form.validate()) {
+         if (this.$refs.form.validate()) {
           this.snackbar = true
 
-          if(this.email=='admin@admin.fr' && this.password == 'admin')
-            location.replace('/tickets2')
+          await this.$store.dispatch('login', {
+            email: this.email,
+            password: this.password
+          }).then((response) => {
+            console.log(response.authResult);
+          })
 
         }
-      },
+
+      } catch (e) {
+        this.formError = e.message
+      }
+    },
+    async logout () {
+      try {
+        await this.$store.dispatch('logout')
+      } catch (e) {
+        this.formError = e.message
+      }
+    },
 
       reset () {
         this.$refs.form.reset()
       },
     },
   }
+  
 </script>

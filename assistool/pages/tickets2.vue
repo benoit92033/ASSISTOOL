@@ -33,6 +33,7 @@
     <v-flex class="text-center">
 
         <p class="display-3 font-weight-light">Nouveau ticket</p>
+        <p>{{ $store.state.authUser[0].username }}</p>
       
         <v-container fluid class="add-form">
 
@@ -86,6 +87,9 @@
 </template>
 <script>
   export default {
+
+    middleware: 'auth',
+
     data: () => ({
         valid:true,
 
