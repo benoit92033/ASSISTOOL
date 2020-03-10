@@ -1,12 +1,25 @@
 const express = require('express')
 const consola = require('consola')
+<<<<<<< HEAD
+const { Nuxt, Builder } = require('nuxt')
+var mysql = require('mysql');
+require('dotenv').config()
+
+
+=======
 const session = require('express-session')
 const helmet = require('helmet')
 const mysql = require('mysql')
 const { Nuxt, Builder } = require('nuxt')
 const app = express()
 require('dotenv').config();
+>>>>>>> 22063444c3d4a571f3989f55c942e0d31c3f725b
 
+<<<<<<< HEAD
+=======
+
+const app = express()
+>>>>>>> bd5806b1694f0441e7a9e77f33d8beedf0caaf9d
 
 // Import and Set Nuxt.js options
 const config = require('../nuxt.config.js')
@@ -36,6 +49,7 @@ async function start () {
   })
 
 
+<<<<<<< HEAD
   // SESSION
 
   var loginPage = (req, res, next) => {
@@ -49,8 +63,34 @@ async function start () {
   // CHECK ROUTES
   app.use("/login", loginPage);
   app.use("/tickets2", checkLoggedIn);
+=======
+
+>>>>>>> bd5806b1694f0441e7a9e77f33d8beedf0caaf9d
 }
 start()
+<<<<<<< HEAD
+console.log(process.env.DB_HOST)
+console.log(process.env.DB_USER)
+console.log(process.env.DB_PASS)
+console.log(process.env.DB_NAME)
+
+var con = mysql.createConnection({
+
+  host: '90.114.67.60',
+  port:3307,
+  username: 'root',
+  password: 'CAxKtT5y',
+  database: 'tickets'
+});
+
+con.connect();
+con.query(`SELECT * FROM user`, function(err, data){
+    if(err) return console.error(err);
+    else {
+        console.log("data : ", data);
+    }
+})
+=======
 
 console.log(process.env.DB_HOST)
 /*
@@ -71,3 +111,4 @@ con.query('SELECT * from user', function(err, rows, fields) {
     console.log('The solution is: ', rows);
     con.end();
 });*/
+>>>>>>> 22063444c3d4a571f3989f55c942e0d31c3f725b
