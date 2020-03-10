@@ -1,11 +1,13 @@
 const express = require('express')
 const consola = require('consola')
-const session = require('express-session')
-const helmet = require('helmet')
 const { Nuxt, Builder } = require('nuxt')
-const app = express()
+var mysql = require('mysql');
+require('dotenv').config()
 
-//app.use(HELMET());
+
+
+
+const app = express()
 
 // Import and Set Nuxt.js options
 const config = require('../nuxt.config.js')
@@ -33,5 +35,29 @@ async function start () {
     message: `Server listening on http://${host}:${port}`,
     badge: true
   })
+
+
+
 }
 start()
+console.log(process.env.DB_HOST)
+console.log(process.env.DB_USER)
+console.log(process.env.DB_PASS)
+console.log(process.env.DB_NAME)
+
+var con = mysql.createConnection({
+
+  host: '90.114.67.60',
+  port:3307,
+  username: 'root',
+  password: 'CAxKtT5y',
+  database: 'tickets'
+});
+
+con.connect();
+con.query(`SELECT * FROM user`, function(err, data){
+    if(err) return console.error(err);
+    else {
+        console.log("data : ", data);
+    }
+})

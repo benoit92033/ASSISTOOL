@@ -17,6 +17,7 @@
     "express": "^4.16.4",
     "express-session": "^1.17.0",
     "helmet": "^3.21.2",
+    "mysql": "^2.18.1",
     "nuxt": "^2.0.0"
   },
   "devDependencies": {
