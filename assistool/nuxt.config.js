@@ -45,6 +45,15 @@ module.exports = {
     '@nuxtjs/axios',
     // Doc: https://github.com/nuxt-community/dotenv-module
     '@nuxtjs/dotenv',
+    '@nuxtjs/toast',
+    [
+      'nuxt-session', 
+      {
+          // express-session options:
+          name: 'nuxt-session-id',
+          secret: '343ji43j4n3jn4jk3n'
+      }
+    ],
   ],
   /*
   ** Axios module configuration
@@ -73,6 +82,7 @@ module.exports = {
       }
     }
   },
+
   /*
   ** Build configuration
   */
@@ -82,5 +92,5 @@ module.exports = {
     */
     extend (config, ctx) {
     }
-  }
+  },
 }

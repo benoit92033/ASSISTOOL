@@ -20,11 +20,13 @@
         </tr>
       </thead>
       <tbody>
-        <tr v-for="ticket in tickets" v-bind:key="ticket">
+
+      <tr v-for="(ticket, i) in tickets" :key="`${i}-${tickets.id}`">
           <td>{{ ticket.id }}</td>
           <td>{{ ticket.title }}</td>
           <td>{{ ticket.priority }}</td>
-        </tr>
+      </tr>
+
       </tbody>
     </table>
 
@@ -114,13 +116,18 @@
             this.snackbar = true
 
             this.newTicket = {
-              titre:this.title,
+              id:0,
+              title:this.title,
               poste:this.poste,
-              urgences:this.urgence,
+              priority:this.urgence,
               probleme:this.probleme,
               description:this.description
             }
+
+            this.tickets.push(this.newTicket);
+
             console.log(this.newTicket)
+            console.log(this.tickets)
           }
         },
         reset () {

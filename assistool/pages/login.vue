@@ -10,6 +10,8 @@
       
         <v-container fluid class="login-form">
 
+          <Notification :message="error" v-if="error"/>
+
             <v-form ref="form" v-model="valid" lazy-validation >
 
                 <v-text-field v-model="email" :rules="emailRules" label="E-mail" required></v-text-field>
@@ -27,7 +29,12 @@
 </template>
 
 <script>
+
+
+
   export default {
+
+
     data: () => ({
       valid: true,
       email: '',
@@ -35,15 +42,22 @@
         v => !!v || 'L\'e-mail doit etre renseignée',
         v => /.+@.+\..+/.test(v) || 'L\'e-mail n\'est pas correcte',
       ],
-      password:''
+      password:'',
     }),
 
     methods: {
+
       validate () {
+
         if (this.$refs.form.validate()) {
           this.snackbar = true
+
+          if(this.email=='admin@admin.fr' && this.password == 'admin')
+            location.replace('/tickets2')
+
         }
       },
+
       reset () {
         this.$refs.form.reset()
       },

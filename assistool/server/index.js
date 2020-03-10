@@ -7,7 +7,6 @@ const { Nuxt, Builder } = require('nuxt')
 const app = express()
 require('dotenv').config();
 
-//app.use(HELMET());
 
 // Import and Set Nuxt.js options
 const config = require('../nuxt.config.js')
@@ -35,13 +34,28 @@ async function start () {
     message: `Server listening on http://${host}:${port}`,
     badge: true
   })
+
+
+  // SESSION
+
+  var loginPage = (req, res, next) => {
+    console.log("login")
+    console.log(this.$store)
+  }
+
+  var checkLoggedIn = (req, res, next) => req.session.loggedIn ? next() : res.redirect("/login");
+
+
+  // CHECK ROUTES
+  app.use("/login", loginPage);
+  app.use("/tickets2", checkLoggedIn);
 }
 start()
 
 console.log(process.env.DB_HOST)
-
+/*
 var con = mysql.createConnection({
-  port:3306,
+  port:process.env.DB_PORT,
   host: process.env.DB_HOST,
   user: process.env.DB_USER,
   password: process.env.DB_PASS,
