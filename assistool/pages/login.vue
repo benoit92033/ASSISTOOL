@@ -35,6 +35,7 @@
 
 
     data: () => ({
+      
       valid: true,
       email: '',
       emailRules: [
@@ -55,8 +56,8 @@
           await this.$store.dispatch('login', {
             email: this.email,
             password: this.password
-          }).then((response) => {
-            console.log(response.authResult);
+          }).then((response) => { // seulement si les logins sont bons
+              this.$router.push('tickets2')
           })
 
         }

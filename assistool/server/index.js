@@ -5,14 +5,18 @@ const helmet = require('helmet')
 const mysql = require('mysql')
 const { Nuxt, Builder } = require('nuxt')
 const app = express()
-require('dotenv').config();
+require('dotenv').config()
+const axios = require('axios')
+path = require('path')
 
+
+//app.use(HELMET());
 
 // Import and Set Nuxt.js options
 const config = require('../nuxt.config.js')
 config.dev = process.env.NODE_ENV !== 'production'
 
-async function start () {
+async function start() {
   // Init Nuxt.js
   const nuxt = new Nuxt(config)
 
@@ -25,6 +29,45 @@ async function start () {
     await builder.build()
   }
 
+
+
+
+//console.log(process.env.DB_HOST)
+
+var con = mysql.createConnection({
+  port: 3306,
+  host: process.env.DB_HOST,
+  user: process.env.DB_USER,
+  password: process.env.DB_PASS,
+  database: process.env.DB_NAME
+})
+
+con.connect(function(err) {
+  if (err) throw err
+  consola.ready({
+    message: `Database Connected !`,
+    badge: true
+  })
+})
+
+// con.query('SELECT * FROM user',
+//       function (err, results, fields){
+//           if(err) throw err;
+//           console.log(results)
+//           //res.json,({"tickets" : results});
+//       }
+//   )
+
+
+  app.get('/getUser',function(req,res){
+      con.query('SELECT * FROM user',
+          function (err, results, fields){
+              if(err) throw err;
+              res.json(results)
+          }
+      )
+    })
+
   // Give nuxt middleware to express
   app.use(nuxt.render)
 
@@ -34,45 +77,17 @@ async function start () {
     message: `Server listening on http://${host}:${port}`,
     badge: true
   })
-
 }
-
 start()
 
-// console.log("after start")
 
-// app.use(session({
-//   secret: 'keyboard cat',
-//   isLogged: false,
-//   cookie: { secure: true }
-// }))
 
-// var loginPage = (req, res, next) => {
-//   console.log("login")
-//   console.log(req.session.isLogged);
-// }
 
-// var checkLoggedIn = (req, res, next) => req.session.isLogged ? next() : res.redirect("/login");
 
-// // CHECK ROUTES
-// app.use("/login", loginPage);
-// app.use("/tickets2", checkLoggedIn);
 
-/*
-var con = mysql.createConnection({
-  port:process.env.DB_PORT,
-  host: process.env.DB_HOST,
-  user: process.env.DB_USER,
-  password: process.env.DB_PASS,
-  database: process.env.DB_NAME
-}); 
 
-con.connect(function(err){
-  if(err) throw err;
-});
-/*
-con.query('SELECT * from user', function(err, rows, fields) {
-    if(err) console.log(err);
-    console.log('The solution is: ', rows);
-    con.end();
-});*/
+
+
+
+
+

@@ -1,7 +1,11 @@
 export const state = () => ({
+    commitForm:[],
     authUser: [{
-        isLogged:false, username:''
-    }]
+        isLogged:false,
+        user:[]
+    }],
+
+    databaseUser:[]
   })
 
 export const getters = {
@@ -15,37 +19,38 @@ export const mutations = {
         state.counter++
     },
 
-    loggin(state,username) {
-        state.authUser[0].isLogged = true;
-        state.authUser[0].username = username;
-        console.log(state.authUser[0].username)
-    },
-
     logout(state) {
         state.authUser[0].isLogged = false;
     },
 
-    getAuthData(state) {
-        return state.authUser[0];
+    saveForm(state,loginForm) {
+        state.commitForm = loginForm;
+    },
+
+    checkUserExist(state,results) {
+        let find = false;
+        for(let user of results) {
+                if(user.mail == state.commitForm.email && user.password == state.commitForm.password) {
+                    find = true;
+                    state.authUser[0].isLogged = true;
+                    state.authUser[0].user[0] = user;
+            }
+        }
+        if(!find) {
+            commitForm = []
+        }
     }
 }
 
 export const actions = {
-    login({commit}, loginForm) {
-        commit('loggin',loginForm.email);
-        console.log(loginForm.email)
-        return commit('getAuthData');
 
-        // return new Promise((resolve, reject) => {
-        //     // Do something here... lets say, a http call using vue-resource
-        //     this.$http("/api/something").then(response => {
-        //         // http success, call the mutator and change something in state
-        //         resolve(response);  // Let the calling function know that http is done. You may send some data back
-        //     }, error => {
-        //         // http failed, let the calling function know that action did not work out
-        //         reject(error);
-        //     })
-        // })
+    login({commit}, loginForm) {
+
+        commit('saveForm',loginForm)
+
+        return ( this.$axios.$get(`getUser`).then(response => {
+            commit('checkUserExist', response)
+        }) )
     },
 
     logout({commit}) {
