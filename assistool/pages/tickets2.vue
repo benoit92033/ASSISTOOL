@@ -29,6 +29,8 @@
       </tbody>
     </table>
 
+    <v-btn  color="warning" nuxt to="/operateur" >Acceder aux tickets</v-btn>
+
     <v-flex class="text-center">
       <p class="display-3 font-weight-light">Nouveau ticket</p>
       <p>{{ $store.state.authUser[0].username }}</p>
@@ -121,10 +123,9 @@ export default {
   methods: {
     async getTickets() {
       try {
-        console.log('ISSOU')
+
         await this.$store.dispatch('getTickets', {
           }).then((response) => { // seulement si les logins sont bons
-              this.$router.push('tickets2')
           })
       } catch (e) {
         this.formError = e.message

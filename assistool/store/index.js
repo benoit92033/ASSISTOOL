@@ -25,6 +25,7 @@ export const mutations = {
 
     logout(state) {
         state.authUser[0].isLogged = false;
+        state.tickets = [];
     },
 
     saveForm(state,loginForm) {

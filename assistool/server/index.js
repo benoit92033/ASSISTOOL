@@ -50,15 +50,6 @@ con.connect(function(err) {
   })
 })
 
-// con.query('SELECT * FROM user',
-//       function (err, results, fields){
-//           if(err) throw err;
-//           console.log(results)
-//           //res.json,({"tickets" : results});
-//       }
-//   )
-
-
   app.get('/getUser',function(req,res){
       con.query('SELECT * FROM user',
           function (err, results, fields){
