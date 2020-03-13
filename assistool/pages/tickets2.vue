@@ -1,142 +1,163 @@
 <style>
-.add-form{
+.add-form {
   max-width: 30vw;
 }
 
-.description{
+.description {
   background-color: #323232;
   padding: 20px;
   margin-bottom: 20px;
 }
-
 </style>
 
 <template>
-<v-layout>
+  <v-layout>
     <table>
       <thead>
         <tr>
-          <th>ID</th><th>Titre</th><th>Urgence</th>
+          <th>ID</th>
+          <th>Titre</th>
+          <th>Urgence</th>
         </tr>
       </thead>
       <tbody>
-
-      <tr v-for="(ticket, i) in tickets" :key="`${i}-${tickets.id}`">
-          <td>{{ ticket.id }}</td>
-          <td>{{ ticket.title }}</td>
-          <td>{{ ticket.priority }}</td>
-      </tr>
-
+        <tr v-for="(ticket, i) in $store.state.tickets" :key="`${i}-${tickets.id_ticket}`">
+          <td>{{ ticket.id_ticket }}</td>
+          <td>{{ ticket.titre }}</td>
+          <td>{{ ticket.urgence }}</td>
+        </tr>
       </tbody>
     </table>
 
     <v-flex class="text-center">
+      <p class="display-3 font-weight-light">Nouveau ticket</p>
+      <p>{{ $store.state.authUser[0].username }}</p>
 
-        <p class="display-3 font-weight-light">Nouveau ticket</p>
-        <p>{{ $store.state.authUser[0].username }}</p>
-      
-        <v-container fluid class="add-form">
+      <v-container fluid class="add-form">
+        <v-form ref="form" v-model="valid" lazy-validation>
+          <v-text-field
+            v-model="title"
+            :rules="[v => !!v || 'Titre requis']"
+            label="Titre"
+            required
+          ></v-text-field>
 
-            <v-form ref="form" v-model="valid" lazy-validation >
+          <v-flex class="d-flex">
+            <v-text-field
+              v-model="poste"
+              :rules="[v => !!v || 'Numéro du poste requis']"
+              label="Poste"
+              required
+            ></v-text-field>
 
-                <v-text-field v-model="title" :rules="[v => !!v || 'Titre requis']" label="Titre" required></v-text-field>
+            <v-col class="mx-auto">
+              <v-select
+                v-model="urgence"
+                :items="urgences"
+                :rules="[v => !!v || 'Urgence requise']"
+                label="Urgence"
+                dense
+                required
+              ></v-select>
+            </v-col>
+          </v-flex>
 
-                <v-flex class="d-flex">
+          <v-col class="mx-auto">
+            <v-select
+              v-model="probleme"
+              :items="problemes"
+              :rules="[v => !!v || 'Problème requis']"
+              label="Problème"
+              dense
+              required
+            ></v-select>
+          </v-col>
 
-                  <v-text-field v-model="poste" :rules="[v => !!v || 'Numéro du poste requis']" label="Poste" required></v-text-field>
+          <v-textarea
+            v-model="description"
+            class="description"
+            label="Description"
+            :rules="[v => !!v || 'Description requise']"
+            auto-grow
+          ></v-textarea>
 
-                  <v-col class="mx-auto">
-
-                    <v-select 
-                      v-model="urgence" 
-                      :items="urgences" 
-                      :rules="[v => !!v || 'Urgence requise']" 
-                      label="Urgence"
-                      dense 
-                      required>
-                    </v-select>
-
-                  </v-col>
-
-                </v-flex>
-
-                <v-col class="mx-auto">
-                  <v-select 
-                    v-model="probleme" 
-                    :items="problemes" 
-                    :rules="[v => !!v || 'Problème requis']" 
-                    label="Problème" 
-                    dense 
-                    required></v-select>
-                </v-col>
-
-                <v-textarea v-model="description" class="description" label="Description" :rules="[v => !!v || 'Description requise']" auto-grow></v-textarea>
-
-                <v-flex class="d-flex justify-space-around mb-6">
-                  <v-btn :disabled="!valid" color="success" @click="validate">Envoyer</v-btn>
-                  <v-btn color="error" @click="reset">Annuler</v-btn>
-                </v-flex>
-
-            </v-form>
-
-        </v-container>
-
+          <v-flex class="d-flex justify-space-around mb-6">
+            <v-btn :disabled="!valid" color="success" @click="validate">Envoyer</v-btn>
+            <v-btn color="error" @click="reset">Annuler</v-btn>
+          </v-flex>
+        </v-form>
+      </v-container>
     </v-flex>
-
   </v-layout>
 </template>
 <script>
-  export default {
+export default {
+  middleware: 'auth',
 
-    middleware: 'auth',
+  data: () => ({
+    valid: true,
 
-    data: () => ({
-        valid:true,
+    newTicket: [],
 
-        newTicket:[],
+    title: '',
 
-        title:'',
+    poste: '',
 
-        poste:'',
-        
-        description:'',
+    description: '',
 
-        urgence:1,
+    urgence: 1,
 
-        probleme:null,
+    probleme: null,
 
-        tickets: [
-          {id:"0", title:"Ecran cassé", priority: "0"},
-          {id:"1", title:"Bug souris", priority: "1"},
-          {id:"2", title:"Bug microsoft word", priority: "2"}
-        ],
-        urgences: [1,2,3,4,5],
-        problemes: ['Logiciel','Materiel','Utilisateur']
-      }),
-  
-      methods: {
-        validate () {
-          if (this.$refs.form.validate()) {
-            this.snackbar = true
+    tickets: [
+      // {id:"0", title:"Ecran cassé", priority: "0"},
+      // {id:"1", title:"Bug souris", priority: "1"},
+      // {id:"2", title:"Bug microsoft word", priority: "2"}
+    ],
+    urgences: [1, 2, 3, 4, 5],
+    problemes: ['Logiciel', 'Materiel', 'Utilisateur']
+  }),
 
-            this.newTicket = {
-              id:0,
-              title:this.title,
-              poste:this.poste,
-              priority:this.urgence,
-              probleme:this.probleme,
-              description:this.description
-            }
+  methods: {
+    async getTickets() {
+      try {
+        console.log('ISSOU')
+        await this.$store.dispatch('getTickets', {
+          }).then((response) => { // seulement si les logins sont bons
+              this.$router.push('tickets2')
+          })
+      } catch (e) {
+        this.formError = e.message
+      }
+    },
 
-            this.tickets.push(this.newTicket);
+    validate() {
+      if (this.$refs.form.validate()) {
+        this.snackbar = true
 
-            console.log(this.newTicket)
-            console.log(this.tickets)
-          }
-        },
-        reset () {
-          this.$refs.form.reset()
-        },
-      },
+        this.newTicket = {
+          id: 0,
+          title: this.title,
+          poste: this.poste,
+          priority: this.urgence,
+          probleme: this.probleme,
+          description: this.description
+        }
+
+        this.tickets.push(this.newTicket)
+
+        console.log(this.newTicket)
+        console.log(this.tickets)
+      }
+    },
+    reset() {
+      this.$refs.form.reset()
+    },
+
+
+  },
+  created() {
+      this.getTickets();
     }
+}
 </script>

@@ -4,6 +4,7 @@ export const state = () => ({
         isLogged:false,
         user:[]
     }],
+    tickets:[],
 
     databaseUser:[]
   })
@@ -11,9 +12,12 @@ export const state = () => ({
 export const getters = {
     getAuthInformations: state => {
         return state.authUser[0];
-    }
+    },
+    getUserInformations: state => {
+      return state.authUser[0].user[0];
+  }
 }
-  
+
 export const mutations = {
     increment (state) {
         state.counter++
@@ -34,12 +38,18 @@ export const mutations = {
                     find = true;
                     state.authUser[0].isLogged = true;
                     state.authUser[0].user[0] = user;
+
             }
         }
         if(!find) {
             commitForm = []
         }
-    }
+    },
+
+    checkTicketsExist(state,results) {
+      state.tickets = results ;
+      console.log(results)
+  }
 }
 
 export const actions = {
@@ -55,5 +65,12 @@ export const actions = {
 
     logout({commit}) {
         commit('logout');
-    }
+    },
+
+    getTickets({commit,getters}) {
+
+      return ( this.$axios.$get(`getTickets?id_user=` +getters.getUserInformations.id_user).then(response => {
+          commit('checkTicketsExist', response)
+      }) )
+  },
 }

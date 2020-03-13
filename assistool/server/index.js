@@ -68,6 +68,15 @@ con.connect(function(err) {
       )
     })
 
+    app.get('/getTickets/',function(req,res){
+      con.query('SELECT * FROM tickets WHERE id_demandeur = ' + req.query.id_user +' OR id_technicien = '+ req.query.id_user,
+          function (err, results, fields){
+              if(err) throw err;
+              res.json(results)
+          }
+      )
+    })
+
   // Give nuxt middleware to express
   app.use(nuxt.render)
 
