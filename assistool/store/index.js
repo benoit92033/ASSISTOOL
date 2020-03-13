@@ -49,7 +49,6 @@ export const mutations = {
 
     checkTicketsExist(state,results) {
       state.tickets = results ;
-      console.log(results)
   }
 }
 
