@@ -68,6 +68,15 @@ con.connect(function(err) {
       )
     })
 
+    app.get('/getComments/',function(req,res){
+      con.query('SELECT c.commentaire, c.id_ticket, u.id_user, u.nom, u.prenom FROM commentaire c JOIN tickets t ON c.id_ticket = t.id_ticket JOIN user u ON c.id_user = u.id_user WHERE c.id_ticket = ' + req.query.id_ticket,
+          function (err, results, fields){
+              if(err) throw err;
+              res.json(results)
+          }
+      )
+    })
+
   // Give nuxt middleware to express
   app.use(nuxt.render)
 
