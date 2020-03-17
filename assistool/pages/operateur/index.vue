@@ -15,10 +15,10 @@
   <v-layout>
     <v-flex>
       <v-container fluid>
-        <v-form ref="form"  lazy-validation>
+        <v-form ref="form" lazy-validation>
           <v-flex class="d-flex">
-            <v-text-field label="Rechercher un ticket"></v-text-field>
-            <v-btn color="primary" @click="search">Rechercher</v-btn>
+            <v-text-field v-model="searchtxt" label="Rechercher un ticket"></v-text-field>
+            <!-- <v-btn color="primary" @click="search">Rechercher</v-btn> -->
           </v-flex>
         </v-form>
       </v-container>
@@ -26,7 +26,7 @@
       <h1 class="display-2 font-weight-light">Tickets à traiter</h1>
 
       <div
-        v-for="(ticket, i) in $store.state.tickets"
+        v-for="(ticket, i) in FilteredTickets"
         :key="`${i}-${tickets.id_ticket}`"
         class="tickets"
       >
@@ -92,22 +92,20 @@
 export default {
   middleware: 'auth',
   data: () => ({
-    tickets: [
-    ]
+    tickets: [],
+    searchtxt: ''
   }),
 
   methods: {
-    async getTickets() {
+     async getTickets() {
       try {
-        await this.$store.dispatch('getTickets', {}).then(response => {
-          // seulement si les logins sont bons
+         await this.$store.dispatch('getTickets', {}).then(response => {
+           this.tickets = this.$store.state.tickets
         })
       } catch (e) {
         this.formError = e.message
       }
-    },
-    search() {
-      console.log(this.recherche)
+
     },
     commenter(idTicket) {
       console.log('commenter')
@@ -125,11 +123,17 @@ export default {
       console.log('transferer')
       console.log(idTicket)
     }
-
   },
   created() {
-      this.getTickets();
-    }
+    this.getTickets()
 
+  },
+  computed: {
+    FilteredTickets: function() {
+      return this.tickets.filter(ticket => {
+        return ticket.titre.toLowerCase().match(this.searchtxt.toLowerCase())
+      })
+    }
+  }
 }
 </script>
