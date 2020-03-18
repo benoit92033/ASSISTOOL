@@ -1,5 +1,4 @@
 export const state = () => ({
-  commitForm: [],
   authUser: [
     {
       isLogged: false,
@@ -9,8 +8,6 @@ export const state = () => ({
   tickets: [],
   id_Ticket: 0,
   comments: [],
-
-  databaseUser: []
 })
 
 export const getters = {
