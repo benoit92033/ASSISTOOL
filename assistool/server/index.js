@@ -166,9 +166,8 @@ var jsonParser = bodyParser.json()
     // })
 
     app.post('/postComments', jsonParser,function(req,res){
-      console.log("Sudo penis");
       let data = res.connection.parser.incoming.body;
-      console.log(data);
+
 
 
       con.query("INSERT INTO commentaire (id_user,id_ticket,commentaire) VALUES (" + data.id_user + " , " + data.id_Ticket +" , '" + escapeHtml(data.commentaire) +"'  ) ",

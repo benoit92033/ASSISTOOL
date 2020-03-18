@@ -73,7 +73,7 @@ export const actions = {
 
     getTickets({ commit, getters }) {
       return this.$axios
-        .$get(getTickets?id_user= + getters.getUserInformations.id_user)
+        .$get('getTickets?id_user=' + getters.getUserInformations.id_user)
         .then(response => {
           commit('checkTicketsExist', response)
         })
@@ -81,7 +81,7 @@ export const actions = {
 
   getComments({ commit }) {
     return this.$axios
-      .$get(getComments?id_ticket= + this.state.id_Ticket)
+      .$get('getComments?id_ticket=' + this.state.id_Ticket)
       .then(response => {
         commit('checkCommentsExist', response)
       })
@@ -97,6 +97,7 @@ export const actions = {
           return false;
       }
    })
+  },
 
     async nuxtServerInit({dispatch, commit}, {req}) {
 
@@ -108,4 +109,5 @@ export const actions = {
             dispatch('cart/setProducts', session.cart);
         }*/
     }
+
 }
