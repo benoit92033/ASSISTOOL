@@ -52,8 +52,8 @@ con.connect(function(err) {
 
 var jsonParser = bodyParser.json()
 
-    app.post('/getUser', jsonParser,function(req,res){ 
-      
+    app.post('/getUser', jsonParser,function(req,res){
+
       let data = res.connection.parser.incoming.body;
 
       con.query('SELECT * FROM user WHERE mail = "'+data.email+'"',
@@ -69,14 +69,14 @@ var jsonParser = bodyParser.json()
       )
     })
 
-    
+
 
     function newTicket(id_tech, data,res) {
 
       let date = new Date()
 
       con.query('INSERT INTO tickets(id_demandeur,id_technicien,titre,description,poste,date_creation,urgence,type) VALUES('+data.id_user+','+id_tech+',"'+data.title+'","'+data.description+'","'+data.poste+'","'+date.getDay()+'/'+date.getMonth()+'/'+date.getFullYear()+'",'+data.priority+',"'+data.probleme+'")',
-          
+
           function (err, results, fields){
               if(err) throw err;
               res.send(true)
@@ -92,13 +92,13 @@ var jsonParser = bodyParser.json()
       let rqt = 'select id_user from user u '+
                 'left join tickets t ON u.id_user = t.id_technicien '+
                 'join qualification q on u.id_user = q.id_technicien '+
-                'where qualification = \''+ data.probleme + 
+                'where qualification = \''+ data.probleme +
                 '\' and t.id_ticket IS NULL'
 
       let rqt2 = 'select id_user, count(*) as count from user u '+
                  'left join tickets t ON u.id_user = t.id_technicien '+
                  'join qualification q on u.id_user = q.id_technicien '+
-                 'where qualification = \''+ data.probleme + 
+                 'where qualification = \''+ data.probleme +
                  '\' group by 1 order by count asc'
 
       con.query(rqt,
@@ -115,7 +115,7 @@ var jsonParser = bodyParser.json()
                       else {
                         newTicket(results[0].id_user, data,res)
                       }
-        
+
                   }
               )
               }
@@ -146,6 +146,39 @@ var jsonParser = bodyParser.json()
       )
     })
 
+    app.get('/getComments/',function(req,res){
+      con.query('SELECT c.commentaire, c.id_ticket, u.id_user, u.nom, u.prenom FROM commentaire c JOIN tickets t ON c.id_ticket = t.id_ticket JOIN user u ON c.id_user = u.id_user WHERE c.id_ticket = ' + req.query.id_ticket,
+          function (err, results, fields){
+              if(err) throw err;
+              res.json(results)
+          }
+      )
+    })
+
+    // app.get('/postComments/',function(req,res){
+    //   console.log("INSERT INTO commentaire (id_user,id_ticket,commentaire) VALUES (" + req.query.id_user + " , " + req.query.id_ticket +" , '" + req.query.com +"'  ) ")
+    //   con.query("INSERT INTO commentaire (id_user,id_ticket,commentaire) VALUES (" + req.query.id_user + " , " + req.query.id_ticket +" , '" + req.query.com +"'  ) ",
+    //       function (err, results, fields){
+    //           if(err) throw err;
+    //           res.json(results)
+    //       }
+    //   )
+    // })
+
+    app.post('/postComments', jsonParser,function(req,res){
+      console.log("Sudo penis");
+      let data = res.connection.parser.incoming.body;
+      console.log(data);
+
+
+      con.query("INSERT INTO commentaire (id_user,id_ticket,commentaire) VALUES (" + data.id_user + " , " + data.id_Ticket +" , '" + escapeHtml(data.commentaire) +"'  ) ",
+          function (err, results, fields){
+              if(err) throw err;
+          res.send(true);
+          }
+      )
+    })
+
   // Give nuxt middleware to express
   app.use(nuxt.render)
 
@@ -158,14 +191,11 @@ var jsonParser = bodyParser.json()
 }
 start()
 
-
-
-
-
-
-
-
-
-
-
-
+function escapeHtml(text) {
+  return text
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;")
+      .replace(/'/g, "&#039;");
+}
