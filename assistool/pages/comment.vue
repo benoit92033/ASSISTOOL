@@ -18,6 +18,15 @@
     <div>
       <p>desc</p>
     </div>
+
+    <v-container fluid>
+      <v-form ref="form" lazy-validation>
+        <v-flex class="d-flex">
+          <v-text-field v-model="commenttxt" label="Ecrire un commentaire :"></v-text-field>
+          <v-btn color="primary" @click="commenter">Envoyer</v-btn>
+        </v-flex>
+      </v-form>
+    </v-container>
   </div>
 </template>
 
@@ -26,7 +35,9 @@
 export default {
   middleware: 'auth',
   data: () => ({
-    comments: []
+    comments: [],
+    commenttxt: '',
+    idTicket: 0
   }),
 
   methods: {
@@ -34,21 +45,27 @@ export default {
       try {
         await this.$store.dispatch('getComments').then(response => {
           this.comments = this.$store.state.comments
+          this.idTicket = this.$store.state.id_Ticket
           console.log(this.comments)
+
         })
       } catch (e) {
         this.formError = e.message
       }
     },
     commenter(idTicket) {
-      console.log('commenter')
-      console.log(idTicket)
+      try {
+        this.$store.dispatch('setComment', this.commenttxt)
+        this.getComments()
+      } catch (e) {
+        this.formError = e.message
+      }
+
     }
   },
-
-    created() {
-      this.getComments()
-    }
+  created() {
+    this.getComments()
+  }
 }
 </script>
 

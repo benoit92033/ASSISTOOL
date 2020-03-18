@@ -8,7 +8,8 @@ const app = express()
 require('dotenv').config()
 const axios = require('axios')
 path = require('path')
-
+const bodyParser = require('body-parser');
+var jsonParser = bodyParser.json()
 
 //app.use(HELMET());
 
@@ -77,6 +78,30 @@ con.connect(function(err) {
       )
     })
 
+    // app.get('/postComments/',function(req,res){
+    //   console.log("INSERT INTO commentaire (id_user,id_ticket,commentaire) VALUES (" + req.query.id_user + " , " + req.query.id_ticket +" , '" + req.query.com +"'  ) ")
+    //   con.query("INSERT INTO commentaire (id_user,id_ticket,commentaire) VALUES (" + req.query.id_user + " , " + req.query.id_ticket +" , '" + req.query.com +"'  ) ",
+    //       function (err, results, fields){
+    //           if(err) throw err;
+    //           res.json(results)
+    //       }
+    //   )
+    // })
+
+    app.post('/postComments', jsonParser,function(req,res){
+      console.log("Sudo penis");
+      let data = res.connection.parser.incoming.body;
+      console.log(data);
+
+
+      con.query("INSERT INTO commentaire (id_user,id_ticket,commentaire) VALUES (" + data.id_user + " , " + data.id_Ticket +" , '" + escapeHtml(data.commentaire) +"'  ) ",
+          function (err, results, fields){
+              if(err) throw err;
+          res.send(true);
+          }
+      )
+    })
+
   // Give nuxt middleware to express
   app.use(nuxt.render)
 
@@ -89,7 +114,14 @@ con.connect(function(err) {
 }
 start()
 
-
+function escapeHtml(text) {
+  return text
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;")
+      .replace(/'/g, "&#039;");
+}
 
 
 
