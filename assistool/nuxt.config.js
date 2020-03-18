@@ -1,6 +1,22 @@
 const colors = require('vuetify/es5/util/colors').default
 
+//import serveStatic from 'serve-static'
+
 module.exports = {
+
+
+  serverMiddleware: [
+    '~/api/index'
+    // Will register redirect-ssl npm package
+    //'redirect-ssl',
+
+    // Will register file from project api directory to handle /api/* requires
+    //{ path: '/api', handler: '~/api/index.js' },
+
+    // We can create custom instances too
+    //{ path: '/static2', handler: serveStatic(__dirname + '/static2') }
+  ],
+
   mode: 'universal',
   /*
   ** Headers of the page

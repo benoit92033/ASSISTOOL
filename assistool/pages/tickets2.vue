@@ -99,8 +99,6 @@ export default {
   data: () => ({
     valid: true,
 
-    newTicket: [],
-
     title: '',
 
     poste: '',
@@ -132,12 +130,15 @@ export default {
       }
     },
 
-    validate() {
+    async validate() {
+
+      let user = this.$store.state.authUser[0].user[0];
+
       if (this.$refs.form.validate()) {
         this.snackbar = true
 
-        this.newTicket = {
-          id: 0,
+        let newTicket = {
+          id_user : user.id_user,
           title: this.title,
           poste: this.poste,
           priority: this.urgence,
@@ -145,10 +146,13 @@ export default {
           description: this.description
         }
 
-        this.tickets.push(this.newTicket)
-
-        console.log(this.newTicket)
-        console.log(this.tickets)
+         try {
+          await this.$store.dispatch('newTicket', newTicket).then((response) => { 
+              this.getTickets();
+            })
+        } catch (e) {
+          this.formError = e.message
+        }
       }
     },
     reset() {

@@ -30,12 +30,12 @@
 export default {
   data: () => ({
     valid: true,
-    email: '',
+    email: 'antoine@assistool.com',
     emailRules: [
       v => !!v || "L'e-mail doit etre renseignée",
       v => /.+@.+\..+/.test(v) || "L'e-mail n'est pas correcte"
     ],
-    password: ''
+    password: 'antoine'
   }),
 
   methods: {
@@ -44,12 +44,12 @@ export default {
         if (this.$refs.form.validate()) {
           this.snackbar = true
 
-          await this.$store
-            .dispatch('login', {
+          await this.$store.dispatch('login', {
+
               email: this.email,
               password: this.password
-            })
-            .then(response => {
+
+            }).then(response => {
               // seulement si les logins sont bons
               switch (this.$store.state.authUser[0].user[0].role) {
                 case 'demandeur':

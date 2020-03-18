@@ -1,5 +1,4 @@
 export const state = () => ({
-    commitForm:[],
     authUser: [{
         isLogged:false,
         user:[]
@@ -32,18 +31,10 @@ export const mutations = {
         state.commitForm = loginForm;
     },
 
-    checkUserExist(state,results) {
-        let find = false;
-        for(let user of results) {
-                if(user.mail == state.commitForm.email && user.password == state.commitForm.password) {
-                    find = true;
-                    state.authUser[0].isLogged = true;
-                    state.authUser[0].user[0] = user;
-
-            }
-        }
-        if(!find) {
-            commitForm = []
+    checkUserExist(state,loginForm) {
+        if(loginForm) {
+            state.authUser[0].isLogged = true;
+            state.authUser[0].user[0] = loginForm;
         }
     },
 
@@ -54,12 +45,17 @@ export const mutations = {
 
 export const actions = {
 
-    login({commit}, loginForm) {
+    async login({commit,state}, loginForm) {
 
-        commit('saveForm',loginForm)
+        await this.$axios.$post(`getUser`, loginForm).then(response => {
+            commit('checkUserExist',response)
+        })
+    },
 
-        return ( this.$axios.$get(`getUser`).then(response => {
-            commit('checkUserExist', response)
+    newTicket({commit}, newTicket) {
+
+        return ( this.$axios.$post(`newTicket`, newTicket).then(response => {
+            console.log("ticket store")
         }) )
     },
 
@@ -72,5 +68,16 @@ export const actions = {
       return ( this.$axios.$get(`getTickets?id_user=` +getters.getUserInformations.id_user).then(response => {
           commit('checkTicketsExist', response)
       }) )
-  },
+    },
+
+    async nuxtServerInit({dispatch, commit}, {req}) {
+ 
+        // Get session ID:
+        const sessionId = req.session.id;
+ 
+        // Or set initial cart state:
+        /*if (session && session.cart) {
+            dispatch('cart/setProducts', session.cart);
+        }*/
+    }
 }

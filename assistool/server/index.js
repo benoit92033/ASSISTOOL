@@ -5,10 +5,10 @@ const helmet = require('helmet')
 const mysql = require('mysql')
 const { Nuxt, Builder } = require('nuxt')
 const app = express()
+const bodyParser = require('body-parser');
 require('dotenv').config()
 const axios = require('axios')
 path = require('path')
-
 
 //app.use(HELMET());
 
@@ -50,13 +50,91 @@ con.connect(function(err) {
   })
 })
 
-  app.get('/getUser',function(req,res){
-      con.query('SELECT * FROM user',
+var jsonParser = bodyParser.json()
+
+    app.post('/getUser', jsonParser,function(req,res){ 
+      
+      let data = res.connection.parser.incoming.body;
+
+      con.query('SELECT * FROM user WHERE mail = "'+data.email+'"',
+          function (err, results, fields){
+              if(err) throw err;
+
+              if(results[0].password == data.password) {
+                res.json(results[0]);
+              } else {
+                res.json(null);
+              }
+          }
+      )
+    })
+
+    
+
+    function newTicket(id_tech, data,res) {
+
+      let date = new Date()
+
+      con.query('INSERT INTO tickets(id_demandeur,id_technicien,titre,description,poste,date_creation,urgence,type) VALUES('+data.id_user+','+id_tech+',"'+data.title+'","'+data.description+'","'+data.poste+'","'+date.getDay()+'/'+date.getMonth()+'/'+date.getFullYear()+'",'+data.priority+',"'+data.probleme+'")',
+          
+          function (err, results, fields){
+              if(err) throw err;
+              res.send(true)
+          }
+      )
+    }
+
+
+    app.post('/newTicket', jsonParser,function(req,res){
+
+      let data = res.connection.parser.incoming.body;
+
+      let rqt = 'select id_user from user u '+
+                'left join tickets t ON u.id_user = t.id_technicien '+
+                'join qualification q on u.id_user = q.id_technicien '+
+                'where qualification = \''+ data.probleme + 
+                '\' and t.id_ticket IS NULL'
+
+      let rqt2 = 'select id_user, count(*) as count from user u '+
+                 'left join tickets t ON u.id_user = t.id_technicien '+
+                 'join qualification q on u.id_user = q.id_technicien '+
+                 'where qualification = \''+ data.probleme + 
+                 '\' group by 1 order by count asc'
+
+      con.query(rqt,
+          function (err, results, fields){
+              //if(err) throw err;
+              if(results.length == 0) {
+
+                con.query(rqt2,
+                  function (err, results, fields){
+                      //if(err) throw err;
+                      if(results.length == 0) {
+                        console.log("aucun résultat, mais c'est pas censé ce produite, ya un bug là")
+                      }
+                      else {
+                        newTicket(results[0].id_user, data,res)
+                      }
+        
+                  }
+              )
+              }
+              else {
+                newTicket(results[0].id_user, data,res)
+              }
+
+          }
+      )
+
+
+
+      /*con.query('INSERT INTO tickets VALUES',
           function (err, results, fields){
               if(err) throw err;
               res.json(results)
           }
-      )
+      )*/
+
     })
 
     app.get('/getTickets/',function(req,res){
