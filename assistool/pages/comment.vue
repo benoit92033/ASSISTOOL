@@ -1,23 +1,42 @@
-<style>
-.add-form {
-  max-width: 30vw;
-}
-
-.description {
-  background-color: #323232;
-  padding: 20px;
-  margin-bottom: 20px;
-}
-</style>
-
 <template>
   <div>
     <div class="d-flex">
-      <h2 class="font-weight-light">titre</h2>
+      <h2 class="font-weight-light">Ticket numéro : {{idTicket}}</h2>
     </div>
-    <div>
-      <p>desc</p>
+
+   <div
+        v-for="(comment, i) in comments"
+        :key="`${i}-${comments.id_commentaire}`"
+        class="Commentaires-container"
+        >
+        <div
+            v-if="idUser != comment.id_user"
+            class="commentaires">
+            <div >
+              <p class="nom-commentaires">{{ comment.nom }} {{ comment.prenom }}</p>
+            </div>
+            <div>
+              <p class="message-commentaires">{{ comment.commentaire }}</p>
+           </div>
+        </div>
+
+        <div
+            v-if="idUser == comment.id_user"
+            class="commentairesUS">
+            <div>
+              <p class="nom-commentaires">{{ comment.nom }} {{ comment.prenom }}</p>
+            </div>
+            <div>
+              <p class="message-commentaires">{{ comment.commentaire }}</p>
+           </div>
+        </div>
     </div>
+
+
+<!--
+        <tr v-for="(ticket, i) in $store.state.tickets" :key="`${i}-${tickets.id_ticket}`">
+         -->
+
 
     <v-container fluid>
       <v-form ref="form" lazy-validation>
@@ -37,7 +56,8 @@ export default {
   data: () => ({
     comments: [],
     commenttxt: '',
-    idTicket: 0
+    idTicket: 0,
+    idUser: 0
   }),
 
   methods: {
@@ -46,8 +66,8 @@ export default {
         await this.$store.dispatch('getComments').then(response => {
           this.comments = this.$store.state.comments
           this.idTicket = this.$store.state.id_Ticket
+          this.idUser = this.$store.state.authUser[0].user[0].id_user
           console.log(this.comments)
-
         })
       } catch (e) {
         this.formError = e.message
@@ -70,3 +90,39 @@ export default {
 </script>
 
 
+<style>
+.add-form {
+  max-width: 30vw;
+}
+
+.commentaires {
+  background-color:#424242;
+  margin-right:100px;
+  padding: 0px 0px 10px 0px;
+  border-radius: 10px;
+}
+
+.commentairesUS {
+  background-color: #0D47A1;
+  margin-left: 100px;
+  padding: 0px 0px 10px 0px;
+  border-radius: 10px;
+}
+
+.Commentaires-container{
+    margin: 20px 10px 20px 10px;
+}
+
+.nom-commentaires{
+  background-color: rgba(255,255,255,0.4);
+  padding: 3px;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+}
+
+.message-commentaires{
+    padding: 0px 10px 0px 0px;
+
+}
+
+</style>
