@@ -3,6 +3,8 @@
     
     <v-app-bar :clipped-left="clipped" color="grey darken-3" fixed app>
 
+      <v-btn v-if="comment" color="blue lighten-3" @click="retour" class="retour">Retour</v-btn> 
+
       <v-toolbar-title v-text="title" />  
 
       <v-spacer></v-spacer> 
@@ -47,7 +49,27 @@ export default {
       } catch (e) {
         this.formError = e.message
       }
+    },
+
+    retour() {
+      this.$router.push('operateur')
     }
+  },
+
+  computed:{
+      comment(){
+        console.log("comment")
+          return this.$route.path === '/comment'
+      }
   }
+
 }
 </script>
+
+<style>
+
+.retour{
+  margin-right: 50px;
+}
+
+</style>
