@@ -73,7 +73,7 @@ export const actions = {
 
     getTickets({ commit, getters }) {
       return this.$axios
-        .$get('getTickets?id_user=' + getters.getUserInformations.id_user)
+        .$post('getTickets', {id_user: getters.getUserInformations.id_user})
         .then(response => {
           commit('checkTicketsExist', response)
         })
@@ -81,7 +81,7 @@ export const actions = {
 
   getComments({ commit }) {
     return this.$axios
-      .$get('getComments?id_ticket=' + this.state.id_Ticket)
+      .$post('getComments', {id_ticket : this.state.id_Ticket})
       .then(response => {
         commit('checkCommentsExist', response)
       })
