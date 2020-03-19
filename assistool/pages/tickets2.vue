@@ -8,6 +8,32 @@
   padding: 20px;
   margin-bottom: 20px;
 }
+
+table {
+  border: 2px solid #0D47A1;
+  border-radius: 3px;
+  background-color: rgb(0, 0, 0);
+}
+
+th {
+  background-color: rgb(42, 86, 151);
+  color: rgb(226, 226, 226);
+  cursor: pointer;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+td {
+  background-color: #646464;
+}
+
+th, td {
+  min-width: 120px;
+  padding: 10px 20px;
+}
+
 </style>
 
 <template>
@@ -18,6 +44,7 @@
           <th>ID</th>
           <th>Titre</th>
           <th>Urgence</th>
+          <th>Action</th>
         </tr>
       </thead>
       <tbody>
@@ -25,11 +52,18 @@
           <td>{{ ticket.id_ticket }}</td>
           <td>{{ ticket.titre }}</td>
           <td>{{ ticket.urgence }}</td>
+          <td>
+            <v-btn
+            style="margin: 10px;"
+            rounded
+            large
+            color="primary"
+            @click="commenter(ticket.id_ticket)"
+          >Commenter</v-btn>
+          </td>
         </tr>
       </tbody>
     </table>
-
-    <v-btn  color="warning" nuxt to="/operateur" >Acceder aux tickets</v-btn>
 
     <v-flex class="text-center">
       <p class="display-3 font-weight-light">Nouveau ticket</p>
@@ -125,6 +159,7 @@ export default {
         await this.$store.dispatch('getTickets', {
           }).then((response) => { // seulement si les logins sont bons
           })
+          console.log(tickets)
       } catch (e) {
         this.formError = e.message
       }
@@ -147,7 +182,7 @@ export default {
         }
 
          try {
-          await this.$store.dispatch('newTicket', newTicket).then((response) => { 
+          await this.$store.dispatch('newTicket', newTicket).then((response) => {
               this.getTickets();
             })
         } catch (e) {
