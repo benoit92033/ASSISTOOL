@@ -174,11 +174,7 @@ con.query('INSERT INTO tickets(id_demandeur,id_technicien,titre,description,post
 
 function escapeHtml(text) {
     return text
-        .replace(/&/g, "&amp;")
-        .replace(/</g, "&lt;")
-        .replace(/>/g, "&gt;")
-        .replace(/"/g, "&quot;")
-        .replace(/'/g, "&#039;");
+        .replace(/'/g, "''");
 }
 
 function GetCurrentDate(){
