@@ -172,6 +172,16 @@ router.post('/postComments', jsonParser,function(req,res){
     )
 })
 
+router.post('/transfertoResp', jsonParser,function(req,res){
+  let data = res.connection.parser.incoming.body;
+  con.query('UPDATE `tickets` SET `id_technicien`=(SELECT `id_user` FROM `user` WHERE `role` = "Responsable") WHERE `id_ticket` =  ' + data.id_ticket,
+      function (err, results, fields){
+          if(err) throw err;
+          res.send(true)
+      }
+  )
+})
+
 function newTicket(id_tech, data,res) {
 con.query('INSERT INTO tickets(id_demandeur,id_technicien,titre,description,poste,date_creation,urgence,type) VALUES('+data.id_user+','+id_tech+',"'+data.title+'","'+data.description+'","'+data.poste+'","'+GetCurrentDate()+'",'+data.priority+',"'+data.probleme+'")',
 
