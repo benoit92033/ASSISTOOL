@@ -129,8 +129,9 @@ router.post('/newTicket', jsonParser,function(req,res){
     )
 })
 
-router.get('/getTickets/',function(req,res){
-    con.query('SELECT * FROM tickets WHERE id_demandeur = ' + req.query.id_user +' OR id_technicien = '+ req.query.id_user,
+router.post('/getTickets',jsonParser,function(req,res){
+    let data = res.connection.parser.incoming.body;
+    con.query('SELECT * FROM tickets WHERE id_demandeur = ' + data.id_user +' OR id_technicien = '+ data.id_user,
         function (err, results, fields){
             if(err) throw err;
             res.json(results)
@@ -138,8 +139,9 @@ router.get('/getTickets/',function(req,res){
     )
 })
 
-router.get('/getComments/',function(req,res){
-    con.query('SELECT c.commentaire, c.id_ticket, u.id_user, u.nom, u.prenom FROM commentaire c JOIN tickets t ON c.id_ticket = t.id_ticket JOIN user u ON c.id_user = u.id_user WHERE c.id_ticket = ' + req.query.id_ticket,
+router.post('/getComments',jsonParser,function(req,res){
+    let data = res.connection.parser.incoming.body;
+    con.query('SELECT c.commentaire, c.id_ticket, u.id_user, u.nom, u.prenom FROM commentaire c JOIN tickets t ON c.id_ticket = t.id_ticket JOIN user u ON c.id_user = u.id_user WHERE c.id_ticket = ' + data.id_ticket,
         function (err, results, fields){
             if(err) throw err;
             res.json(results)
