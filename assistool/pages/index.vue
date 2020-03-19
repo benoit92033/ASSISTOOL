@@ -19,9 +19,6 @@
         <v-card-actions>
           <v-flex class="text-center">
             <v-btn color="primary" nuxt to="/login" >Se connecter</v-btn>
-            <v-btn color="warning" nuxt to="/tickets2" >Page add ticket</v-btn>
-            
-            <v-btn color="warning" nuxt to="/testLogin" >Test</v-btn>
           </v-flex>
         </v-card-actions>
 
