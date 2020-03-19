@@ -1,13 +1,13 @@
 <template>
   <v-app dark>
     
-    <v-app-bar :clipped-left="clipped" fixed app>
+    <v-app-bar :clipped-left="clipped" color="grey darken-3" fixed app>
 
-      <v-btn icon @click.stop="menu = !menu"> 
-        <v-icon>mdi-menu</v-icon>
-      </v-btn>
+      <v-toolbar-title v-text="title" />  
 
-      <v-toolbar-title v-text="title" />      
+      <v-spacer></v-spacer> 
+
+      <v-btn v-if="this.$store.state.authUser[0].isLogged" color="deep-orange darken-1" @click="logout">Se deconnecter</v-btn>   
 
     </v-app-bar>
 
@@ -16,36 +16,6 @@
         <nuxt />
       </v-container>
     </v-content>
-
-    <v-navigation-drawer v-model="menu" :left="true" temporary fixed>
-      <v-list>
-
-        <v-list-item @click.native="test = !test">
-
-          <v-list-item-action>
-            <v-icon light>
-              mdi-home
-            </v-icon>
-          </v-list-item-action>
-
-          <v-list-item-title>Home</v-list-item-title>
-
-        </v-list-item>
-
-        <v-list-item>
-
-          <v-list-item-action>
-            <v-icon light>
-              mdi-repeat
-            </v-icon>
-          </v-list-item-action>
-
-          <v-list-item-title>{{ test }}</v-list-item-title>
-
-        </v-list-item>
-
-      </v-list>
-    </v-navigation-drawer>
 
 
     <v-footer :fixed="fixed" app>
@@ -65,6 +35,17 @@ export default {
       menu: false,
       test:false,
       title: 'Assistool'
+    }
+  },
+
+  methods: {
+    logout() {
+      try {
+        this.$store.dispatch('logout')
+        this.$router.push('login')
+      } catch (e) {
+        this.formError = e.message
+      }
     }
   }
 }

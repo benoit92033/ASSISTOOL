@@ -45,20 +45,10 @@ router.use((req, res, next) => {
   next()
 })
 
-// Add POST - /api/login
-router.post('/login', (req, res) => {
-  if (req.body.username === 'demo' && req.body.password === 'demo') {
-    req.session.authUser = { username: 'demo' }
-    req.session.expires = req.session.cookie.expires.getTime()
-    return res.json({ username: 'demo', expires: req.session.expires })
-  }
-  res.status(401).json({ message: 'Bad credentials' })
-})
 
-// Add POST - /api/logout
 router.post('/logout', (req, res) => {
-  delete req.session.authUser
-  delete req.session.expires
+  req.session.user = [];
+  req.session.isLogged = false;
   res.json({ ok: true })
 })
 
@@ -184,11 +174,7 @@ con.query('INSERT INTO tickets(id_demandeur,id_technicien,titre,description,post
 
 function escapeHtml(text) {
     return text
-        .replace(/&/g, "&amp;")
-        .replace(/</g, "&lt;")
-        .replace(/>/g, "&gt;")
-        .replace(/"/g, "&quot;")
-        .replace(/'/g, "&#039;");
+        .replace(/'/g, "''");
 }
 
 function GetCurrentDate(){
