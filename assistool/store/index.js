@@ -53,7 +53,7 @@ export const mutations = {
     this.state.id_Ticket = idtick ;
 
   },
-  
+
   setSession(state,user) {
     state.authUser[0].isLogged = true;
     state.authUser[0].user[0] = user;
@@ -78,7 +78,7 @@ export const actions = {
 
     getTickets({ commit, getters }) {
       return this.$axios
-        .$get('/api/getTickets?id_user=' + getters.getUserInformations.id_user)
+        .$post('/api/getTickets', {id_user: getters.getUserInformations.id_user})
         .then(response => {
           commit('checkTicketsExist', response)
         })
@@ -86,7 +86,7 @@ export const actions = {
 
   getComments({ commit }) {
     return this.$axios
-      .$get('/api/getComments?id_ticket=' + this.state.id_Ticket)
+      .$post('/api/getComments', {id_ticket : this.state.id_Ticket})
       .then(response => {
         commit('checkCommentsExist', response)
       })
