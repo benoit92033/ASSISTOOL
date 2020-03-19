@@ -25,11 +25,7 @@
 
       <h1 class="display-2 font-weight-light">Tickets à traiter</h1>
 
-      <div
-        v-for="(ticket, i) in FilteredTickets"
-        :key="`${i}-${tickets.id_ticket}`"
-        class="tickets"
-      >
+      <div v-for="(ticket, i) in FilteredTickets" :key="`${i}-${tickets.id_ticket}`" class="tickets" >
         <div class="d-flex">
           <h2 class="font-weight-light">{{ ticket.titre }}</h2>
           <v-btn
@@ -83,8 +79,51 @@
           @click="transferer(ticket.id_ticket)"
         >Transferer</v-btn>
       </div>
+
+
+       <h1 class="display-2 font-weight-light">Tickets Fermés</h1>
+
+      <div v-for="tc in ticketsClose" :key="tc.id_ticket" class="tickets" >
+        <div class="d-flex">
+          <h2 class="font-weight-light">{{ tc.titre }}</h2>
+          <v-btn
+            v-if="tc.urgence == 0"
+            depressed
+            small
+            style="margin: 10px; pointer-events: none;"
+            color="success"
+          >Pas urgent</v-btn>
+          <v-btn
+            v-else-if="tc.urgence == 1"
+            depressed
+            small
+            style="margin: 10px; pointer-events: none;"
+            color="warning"
+          >Urgent</v-btn>
+          <v-btn
+            v-else
+            depressed
+            small
+            style="margin: 10px; pointer-events: none;"
+            color="error"
+          >Très Urgent</v-btn>
+        </div>
+        <div>
+          <p>{{ tc.description }}</p>
+        </div>
+        <div>
+          <img src="v.png" />
+        </div>
+      </div>
+      
     </v-flex>
+
+    
+
   </v-layout>
+
+       
+
 </template>
 
 
@@ -93,6 +132,7 @@ export default {
   middleware: 'auth',
   data: () => ({
     tickets: [],
+    ticketsClose: [],
     searchtxt: ''
   }),
 
@@ -107,6 +147,18 @@ export default {
       }
 
     },
+
+    async getTicketsClose() {
+      try {
+         await this.$store.dispatch('getTicketsClose').then(response => {
+           this.ticketsClose = this.$store.state.ticketsClose
+        })
+      } catch (e) {
+        this.formError = e.message
+      }
+
+    },
+
     commenter(idTicket) {
       this.$store.commit("setTicketId",idTicket)
       this.$router.push("comment")
@@ -123,17 +175,24 @@ export default {
       console.log(idTicket)
     },
     transferer(idTicket) {
-      console.log('transferer')
-      console.log(idTicket)
+      this.$store.dispatch('transfertoResp', idTicket)
+      this.getTickets() ;
     }
   },
   created() {
-    this.getTickets()
+    this.getTickets(),
+    this.getTicketsClose()
 
   },
   computed: {
     FilteredTickets: function() {
       return this.tickets.filter(ticket => {
+        return ticket.titre.toLowerCase().match(this.searchtxt.toLowerCase())
+      })
+    },
+
+    FilteredTicketsClose: function() {
+      return this.ticketsClose.filter(ticket => {
         return ticket.titre.toLowerCase().match(this.searchtxt.toLowerCase())
       })
     }

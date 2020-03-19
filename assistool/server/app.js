@@ -121,7 +121,17 @@ router.post('/newTicket', jsonParser,function(req,res){
 
 router.post('/getTickets',jsonParser,function(req,res){
     let data = res.connection.parser.incoming.body;
-    con.query('SELECT * FROM tickets WHERE id_demandeur = ' + data.id_user +' OR id_technicien = '+ data.id_user,
+    con.query('SELECT * FROM tickets WHERE date_cloture IS NULL AND id_demandeur = ' + data.id_user +' OR id_technicien = '+ data.id_user,
+        function (err, results, fields){
+            if(err) throw err;
+            res.json(results)
+        }
+    )
+})
+
+router.post('/getTicketsClose',jsonParser,function(req,res){
+    let data = res.connection.parser.incoming.body;
+    con.query('SELECT * FROM tickets WHERE date_cloture IS NOT NULL AND id_demandeur = ' + data.id_user +' OR id_technicien = '+ data.id_user,
         function (err, results, fields){
             if(err) throw err;
             res.json(results)
@@ -160,6 +170,16 @@ router.post('/postComments', jsonParser,function(req,res){
         res.send(true);
         }
     )
+})
+
+router.post('/transfertoResp', jsonParser,function(req,res){
+  let data = res.connection.parser.incoming.body;
+  con.query('UPDATE `tickets` SET `id_technicien`=(SELECT `id_user` FROM `user` WHERE `role` = "Responsable") WHERE `id_ticket` =  ' + data.id_ticket,
+      function (err, results, fields){
+          if(err) throw err;
+          res.send(true)
+      }
+  )
 })
 
 function newTicket(id_tech, data,res) {
