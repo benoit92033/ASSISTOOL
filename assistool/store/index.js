@@ -81,6 +81,26 @@ export const actions = {
       })
   },
 
+    async logout({commit,state}) {
+      await this.$axios.$post(`/api/logout`)
+      commit('logout')
+    },
+
+    newTicket({commit}, newTicket) {
+
+        return ( this.$axios.$post(`/api/newTicket`, newTicket).then(response => {
+            console.log("ticket store")
+        }) )
+    },
+
+    getTickets({ commit, getters }) {
+      return this.$axios
+        .$post('/api/getTickets', {id_user: getters.getUserInformations.id_user})
+        .then(response => {
+          commit('checkTicketsExist', response)
+        })
+    },
+
   getComments({ commit }) {
     return this.$axios
       .$post('/api/getComments', { id_ticket: this.state.id_Ticket })

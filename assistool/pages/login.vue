@@ -14,12 +14,6 @@
 
           <v-btn :disabled="!valid" color="success" @click="login">Valider</v-btn>
           <v-btn color="error" @click="reset">Annuler</v-btn>
-          <v-btn
-            v-if="$store.state.authUser[0].isLogged"
-            color="warning"
-            nuxt
-            to="/tickets2"
-          >Acceder aux tickets</v-btn>
         </v-form>
       </v-container>
     </v-flex>
@@ -42,6 +36,7 @@ export default {
     async login() {
       try {
         if (this.$refs.form.validate()) {
+
           this.snackbar = true
 
           await this.$store.dispatch('login', {
@@ -64,13 +59,6 @@ export default {
               }
             })
         }
-      } catch (e) {
-        this.formError = e.message
-      }
-    },
-    async logout() {
-      try {
-        await this.$store.dispatch('logout')
       } catch (e) {
         this.formError = e.message
       }
