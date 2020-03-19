@@ -7,6 +7,7 @@
 
       <v-spacer></v-spacer> 
 
+
       <v-btn v-if="this.$store.state.authUser[0].isLogged" color="deep-orange darken-1" @click="logout">Se deconnecter</v-btn>   
 
     </v-app-bar>
