@@ -1,25 +1,26 @@
 <template>
   <div>
+
     <div class="d-flex">
       <h2 class="font-weight-light">Ticket numéro : {{idTicket}}</h2>
     </div>
 
-   <div
-        v-for="(comment, i) in comments"
-        :key="`${i}-${comments.id_commentaire}`"
-        class="Commentaires-container"
-        >
+      <div class="container-height">
         <div
-            v-if="idUser != comment.id_user"
-            class="commentaires">
-            <div >
-              <p class="nom-commentaires">{{ comment.nom }} {{ comment.prenom }}</p>
+          v-for="(comment, i) in comments"
+          :key="`${i}-${comments.id_commentaire}`"
+          class="Commentaires-container"
+          >
+          <div
+              v-if="idUser != comment.id_user"
+              class="commentaires">
+              <div >
+                <p class="nom-commentaires">{{ comment.nom }} {{ comment.prenom }}</p>
+              </div>
+              <div>
+                <p class="message-commentaires">{{ comment.commentaire }}</p>
             </div>
-            <div>
-              <p class="message-commentaires">{{ comment.commentaire }}</p>
-           </div>
-        </div>
-
+          </div>
         <div
             v-if="idUser == comment.id_user"
             class="commentairesUS">
@@ -28,24 +29,20 @@
             </div>
             <div>
               <p class="message-commentaires">{{ comment.commentaire }}</p>
-           </div>
+          </div>
         </div>
-    </div>
+      </div>
+      </div>
 
+      <v-container fluid class="input-commentaire">
+        <v-form ref="form" lazy-validation>
+          <v-flex class="d-flex">
+            <v-text-field class="text-comment" v-model="commenttxt" label="Ecrire un commentaire :"></v-text-field>
+            <v-btn color="primary" @click="commenter">Envoyer</v-btn>
+          </v-flex>
+        </v-form>
+      </v-container>
 
-<!--
-        <tr v-for="(ticket, i) in $store.state.tickets" :key="`${i}-${tickets.id_ticket}`">
-         -->
-
-
-    <v-container fluid>
-      <v-form ref="form" lazy-validation>
-        <v-flex class="d-flex">
-          <v-text-field v-model="commenttxt" label="Ecrire un commentaire :"></v-text-field>
-          <v-btn color="primary" @click="commenter">Envoyer</v-btn>
-        </v-flex>
-      </v-form>
-    </v-container>
   </div>
 </template>
 
@@ -91,12 +88,9 @@ export default {
 
 
 <style>
-.add-form {
-  max-width: 30vw;
-}
 
 .commentaires {
-  background-color:#424242;
+  background-color:#353535;
   margin-right:100px;
   padding: 0px 0px 10px 0px;
   border-radius: 10px;
@@ -110,19 +104,35 @@ export default {
 }
 
 .Commentaires-container{
-    margin: 20px 10px 20px 10px;
+  margin: 20px 10px 20px 10px;
 }
 
 .nom-commentaires{
-  background-color: rgba(255,255,255,0.4);
-  padding: 3px;
+  background-color: rgba(255,255,255,0.3);
+  padding:4px 4px 4px 10px;
   border-top-left-radius: 10px;
   border-top-right-radius: 10px;
 }
 
 .message-commentaires{
-    padding: 0px 10px 0px 0px;
+    padding: 0px 10px 0px 10px;
+}
 
+.input-commentaire{
+  z-index: 1;
+  position:fixed;
+  top: 80%;
+  padding-top: 50px;
+  padding-bottom: 50px;
+  background-color: #121212;
+}
+
+.text-comment{
+  max-width: 70%;
+}
+
+.container-height{
+ margin-bottom: 15%;
 }
 
 </style>
