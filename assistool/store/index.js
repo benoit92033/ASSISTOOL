@@ -52,6 +52,11 @@ export const mutations = {
   setTicketId(state, idtick) {
     this.state.id_Ticket = idtick ;
 
+  },
+  
+  setSession(state,user) {
+    state.authUser[0].isLogged = true;
+    state.authUser[0].user[0] = user;
   }
 }
 
@@ -59,21 +64,21 @@ export const actions = {
 
     async login({commit,state}, loginForm) {
 
-        await this.$axios.$post(`getUser`, loginForm).then(response => {
+        await this.$axios.$post(`/api/getUser`, loginForm).then(response => {
             commit('checkUserExist',response)
         })
     },
 
     newTicket({commit}, newTicket) {
 
-        return ( this.$axios.$post(`newTicket`, newTicket).then(response => {
+        return ( this.$axios.$post(`/api/newTicket`, newTicket).then(response => {
             console.log("ticket store")
         }) )
     },
 
     getTickets({ commit, getters }) {
       return this.$axios
-        .$get('getTickets?id_user=' + getters.getUserInformations.id_user)
+        .$get('/api/getTickets?id_user=' + getters.getUserInformations.id_user)
         .then(response => {
           commit('checkTicketsExist', response)
         })
@@ -81,7 +86,7 @@ export const actions = {
 
   getComments({ commit }) {
     return this.$axios
-      .$get('getComments?id_ticket=' + this.state.id_Ticket)
+      .$get('/api/getComments?id_ticket=' + this.state.id_Ticket)
       .then(response => {
         commit('checkCommentsExist', response)
       })
@@ -89,7 +94,7 @@ export const actions = {
 
   setComment({state, getters}, commentaire  ) {
 
-    return this.$axios.$post(`postComments`, {id_Ticket: this.state.id_Ticket , id_user : getters.getUserInformations.id_user, commentaire: commentaire }).then(response => {
+    return this.$axios.$post(`/api/postComments`, {id_Ticket: this.state.id_Ticket , id_user : getters.getUserInformations.id_user, commentaire: commentaire }).then(response => {
 
       if(response) {
            return true
@@ -101,7 +106,7 @@ export const actions = {
 
   closeTicket({state, getters}, idTick  ) {
     console.log(idTick)
-    return this.$axios.$post(`closeTicket`, {id_ticket: idTick}).then(response => {
+    return this.$axios.$post(`/api/closeTicket`, {id_ticket: idTick}).then(response => {
 
       if(response) {
            return true
@@ -115,6 +120,12 @@ export const actions = {
 
         // Get session ID:
         const sessionId = req.session.id;
+
+        console.log(sessionId)
+
+        if(req.session.isLogged == true) {
+          commit('setSession', req.session.user[0]);
+        }
 
         // Or set initial cart state:
         /*if (session && session.cart) {
