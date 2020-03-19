@@ -72,9 +72,6 @@ var jsonParser = bodyParser.json()
 
 
     function newTicket(id_tech, data,res) {
-
-      let date = new Date()
-
       con.query('INSERT INTO tickets(id_demandeur,id_technicien,titre,description,poste,date_creation,urgence,type) VALUES('+data.id_user+','+id_tech+',"'+data.title+'","'+data.description+'","'+data.poste+'","'+GetCurrentDate()+'",'+data.priority+',"'+data.probleme+'")',
 
           function (err, results, fields){
@@ -158,7 +155,6 @@ var jsonParser = bodyParser.json()
 
     app.post('/closeTicket', jsonParser,function(req,res){
       let data = res.connection.parser.incoming.body;
-      let date = new Date()
 
       console.log(GetCurrentDate())
       con.query('UPDATE `tickets` SET `date_cloture` = "'+GetCurrentDate()+'" WHERE `tickets`.`id_ticket` = ' + data.id_ticket,
@@ -219,6 +215,5 @@ function GetCurrentDate(){
   var mm = String(today.getMonth() + 1).padStart(2, '0'); //Janvier est 0
   var yyyy = today.getFullYear();
   today = dd + '/' + mm + '/' + yyyy;
-  console.log(today);
   return today;
 }
