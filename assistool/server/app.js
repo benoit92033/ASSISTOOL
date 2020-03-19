@@ -28,7 +28,7 @@ var con = mysql.createConnection({
     password: process.env.DB_PASS,
     database: process.env.DB_NAME
 })
-  
+
 con.connect(function(err) {
 if (err) throw err
 consola.ready({
@@ -78,7 +78,7 @@ router.post('/getUser', jsonParser, function(req,res){
 })
 
 router.post('/newTicket', jsonParser,function(req,res){
-  
+
     let data = res.connection.parser.incoming.body;
 
     let rqt = 'select id_user from user u '+
@@ -131,7 +131,7 @@ router.post('/getTickets',jsonParser,function(req,res){
 
 router.post('/getComments',jsonParser,function(req,res){
     let data = res.connection.parser.incoming.body;
-    con.query('SELECT c.commentaire, c.id_ticket, u.id_user, u.nom, u.prenom FROM commentaire c JOIN tickets t ON c.id_ticket = t.id_ticket JOIN user u ON c.id_user = u.id_user WHERE c.id_ticket = ' + data.id_ticket,
+    con.query('SELECT c.id_commentaire,c.commentaire, c.id_ticket, u.id_user, u.nom, u.prenom FROM commentaire c JOIN tickets t ON c.id_ticket = t.id_ticket JOIN user u ON c.id_user = u.id_user WHERE c.id_ticket = ' + data.id_ticket,
         function (err, results, fields){
             if(err) throw err;
             res.json(results)
@@ -180,7 +180,7 @@ function escapeHtml(text) {
         .replace(/"/g, "&quot;")
         .replace(/'/g, "&#039;");
 }
-  
+
 function GetCurrentDate(){
     var today = new Date();
     var dd = String(today.getDate()).padStart(2, '0');
@@ -196,7 +196,7 @@ module.exports = app
 
 
 /*
- 
+
       // app.get('/postComments/',function(req,res){
       //   console.log("INSERT INTO commentaire (id_user,id_ticket,commentaire) VALUES (" + req.query.id_user + " , " + req.query.id_ticket +" , '" + req.query.com +"'  ) ")
       //   con.query("INSERT INTO commentaire (id_user,id_ticket,commentaire) VALUES (" + req.query.id_user + " , " + req.query.id_ticket +" , '" + req.query.com +"'  ) ",
@@ -206,7 +206,7 @@ module.exports = app
       //       }
       //   )
       // })
-  
+
 
 
   */
