@@ -75,7 +75,7 @@ var jsonParser = bodyParser.json()
 
       let date = new Date()
 
-      con.query('INSERT INTO tickets(id_demandeur,id_technicien,titre,description,poste,date_creation,urgence,type) VALUES('+data.id_user+','+id_tech+',"'+data.title+'","'+data.description+'","'+data.poste+'","'+date.getDay()+'/'+date.getMonth()+'/'+date.getFullYear()+'",'+data.priority+',"'+data.probleme+'")',
+      con.query('INSERT INTO tickets(id_demandeur,id_technicien,titre,description,poste,date_creation,urgence,type) VALUES('+data.id_user+','+id_tech+',"'+data.title+'","'+data.description+'","'+data.poste+'","'+GetCurrentDate()+'",'+data.priority+',"'+data.probleme+'")',
 
           function (err, results, fields){
               if(err) throw err;
@@ -155,6 +155,20 @@ var jsonParser = bodyParser.json()
       )
     })
 
+
+    app.post('/closeTicket', jsonParser,function(req,res){
+      let data = res.connection.parser.incoming.body;
+      let date = new Date()
+
+      console.log(GetCurrentDate())
+      con.query('UPDATE `tickets` SET `date_cloture` = "'+GetCurrentDate()+'" WHERE `tickets`.`id_ticket` = ' + data.id_ticket,
+          function (err, results, fields){
+              if(err) throw err;
+              res.send(true)
+          }
+      )
+    })
+
     // app.get('/postComments/',function(req,res){
     //   console.log("INSERT INTO commentaire (id_user,id_ticket,commentaire) VALUES (" + req.query.id_user + " , " + req.query.id_ticket +" , '" + req.query.com +"'  ) ")
     //   con.query("INSERT INTO commentaire (id_user,id_ticket,commentaire) VALUES (" + req.query.id_user + " , " + req.query.id_ticket +" , '" + req.query.com +"'  ) ",
@@ -197,4 +211,14 @@ function escapeHtml(text) {
       .replace(/>/g, "&gt;")
       .replace(/"/g, "&quot;")
       .replace(/'/g, "&#039;");
+}
+
+function GetCurrentDate(){
+  var today = new Date();
+  var dd = String(today.getDate()).padStart(2, '0');
+  var mm = String(today.getMonth() + 1).padStart(2, '0'); //Janvier est 0
+  var yyyy = today.getFullYear();
+  today = dd + '/' + mm + '/' + yyyy;
+  console.log(today);
+  return today;
 }

@@ -74,7 +74,7 @@
           color="primary"
           @click="traiter(ticket.id_ticket)"
         >Traiter</v-btn>
-        <v-btn style="margin: 10px;" rounded large color="error" @click="fermer(ticket.id)">Fermer</v-btn>
+        <v-btn style="margin: 10px;" rounded large color="error" @click="fermer(ticket.id_ticket)">Fermer</v-btn>
         <v-btn
           style="margin: 10px;"
           rounded
@@ -118,6 +118,7 @@ export default {
       console.log(idTicket)
     },
     fermer(idTicket) {
+      this.$store.dispatch('closeTicket', idTicket)
       console.log('fermer')
       console.log(idTicket)
     },

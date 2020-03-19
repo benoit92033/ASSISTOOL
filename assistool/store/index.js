@@ -88,8 +88,20 @@ export const actions = {
   },
 
   setComment({state, getters}, commentaire  ) {
-    console.log(commentaire)
+
     return this.$axios.$post(`postComments`, {id_Ticket: this.state.id_Ticket , id_user : getters.getUserInformations.id_user, commentaire: commentaire }).then(response => {
+
+      if(response) {
+           return true
+      } else {
+          return false;
+      }
+   })
+  },
+
+  closeTicket({state, getters}, idTick  ) {
+    console.log(idTick)
+    return this.$axios.$post(`closeTicket`, {id_ticket: idTick}).then(response => {
 
       if(response) {
            return true
