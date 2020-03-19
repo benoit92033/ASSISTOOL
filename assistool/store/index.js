@@ -8,7 +8,7 @@ export const state = () => ({
   tickets: [],
   ticketsClose: [],
   id_Ticket: 0,
-  comments: [],
+  comments: []
 })
 
 export const getters = {
@@ -34,12 +34,12 @@ export const mutations = {
     state.commitForm = loginForm
   },
 
-  checkUserExist(state,loginForm) {
-        if(loginForm) {
-            state.authUser[0].isLogged = true;
-            state.authUser[0].user[0] = loginForm;
-        }
-    },
+  checkUserExist(state, loginForm) {
+    if (loginForm) {
+      state.authUser[0].isLogged = true
+      state.authUser[0].user[0] = loginForm
+    }
+  },
 
   checkTicketsExist(state, results) {
     state.tickets = results
@@ -53,26 +53,38 @@ export const mutations = {
     state.comments = results
   },
 
-
   setTicketId(state, idtick) {
-    this.state.id_Ticket = idtick ;
-
+    this.state.id_Ticket = idtick
   },
 
-  setSession(state,user) {
-    state.authUser[0].isLogged = true;
-    state.authUser[0].user[0] = user;
+  setSession(state, user) {
+    state.authUser[0].isLogged = true
+    state.authUser[0].user[0] = user
   }
 }
 
 export const actions = {
+  async login({ commit, state }, loginForm) {
+    await this.$axios.$post(`/api/getUser`, loginForm).then(response => {
+      commit('checkUserExist', response)
+    })
+  },
 
-    async login({commit,state}, loginForm) {
+  newTicket({ commit }, newTicket) {
+    return this.$axios.$post(`/api/newTicket`, newTicket).then(response => {
+      console.log('ticket store')
+    })
+  },
 
-        await this.$axios.$post(`/api/getUser`, loginForm).then(response => {
-            commit('checkUserExist',response)
-        })
-    },
+  getTickets({ commit, getters }) {
+    return this.$axios
+      .$post('/api/getTickets', {
+        id_user: getters.getUserInformations.id_user
+      })
+      .then(response => {
+        commit('checkTicketsExist', response)
+      })
+  },
 
     async logout({commit,state}) {
       await this.$axios.$post(`/api/logout`)
@@ -104,51 +116,65 @@ export const actions = {
 
   getComments({ commit }) {
     return this.$axios
-      .$post('/api/getComments', {id_ticket : this.state.id_Ticket})
+      .$post('/api/getComments', { id_ticket: this.state.id_Ticket })
       .then(response => {
         commit('checkCommentsExist', response)
       })
   },
 
-  setComment({state, getters}, commentaire  ) {
-
-    return this.$axios.$post(`/api/postComments`, {id_Ticket: this.state.id_Ticket , id_user : getters.getUserInformations.id_user, commentaire: commentaire }).then(response => {
-
-      if(response) {
-           return true
-      } else {
-          return false;
-      }
-   })
-  },
-
-  closeTicket({state, getters}, idTick  ) {
-    console.log(idTick)
-    return this.$axios.$post(`/api/closeTicket`, {id_ticket: idTick}).then(response => {
-
-      if(response) {
-           return true
-      } else {
-          return false;
-      }
-   })
-  },
-
-    async nuxtServerInit({dispatch, commit}, {req}) {
-
-        // Get session ID:
-        const sessionId = req.session.id;
-
-        console.log(sessionId)
-
-        if(req.session.isLogged == true) {
-          commit('setSession', req.session.user[0]);
+  setComment({ state, getters }, commentaire) {
+    return this.$axios
+      .$post(`/api/postComments`, {
+        id_Ticket: this.state.id_Ticket,
+        id_user: getters.getUserInformations.id_user,
+        commentaire: commentaire
+      })
+      .then(response => {
+        if (response) {
+          return true
+        } else {
+          return false
         }
+      })
+  },
 
-        // Or set initial cart state:
-        /*if (session && session.cart) {
-            dispatch('cart/setProducts', session.cart);
-        }*/
+  closeTicket({ state, getters }, idTick) {
+    return this.$axios
+      .$post(`/api/closeTicket`, { id_ticket: idTick })
+      .then(response => {
+        if (response) {
+          return true
+        } else {
+          return false
+        }
+      })
+  },
+
+  transfertoResp({ state, getters }, idTick) {
+    return this.$axios
+      .$post(`/api/transfertoResp`, { id_ticket: idTick })
+      .then(response => {
+        if (response) {
+          return true
+        } else {
+          return false
+        }
+      })
+  },
+
+  async nuxtServerInit({ dispatch, commit }, { req }) {
+    // Get session ID:
+    const sessionId = req.session.id
+
+    console.log(sessionId)
+
+    if (req.session.isLogged == true) {
+      commit('setSession', req.session.user[0])
     }
 
+    // Or set initial cart state:
+    /*if (session && session.cart) {
+            dispatch('cart/setProducts', session.cart);
+        }*/
+  }
 }

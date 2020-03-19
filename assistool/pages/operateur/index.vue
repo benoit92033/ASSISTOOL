@@ -175,8 +175,8 @@ export default {
       console.log(idTicket)
     },
     transferer(idTicket) {
-      console.log('transferer')
-      console.log(idTicket)
+      this.$store.dispatch('transfertoResp', idTicket)
+      this.getTickets() ;
     }
   },
   created() {
