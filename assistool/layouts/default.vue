@@ -1,16 +1,16 @@
 <template>
   <v-app dark>
-    
+
     <v-app-bar :clipped-left="clipped" color="grey darken-3" fixed app>
 
-      <v-btn v-if="comment" color="blue lighten-3" @click="retour" class="retour">Retour</v-btn> 
+      <v-btn v-if="comment" color="blue lighten-3" @click="retour" class="retour">Retour</v-btn>
 
-      <v-toolbar-title v-text="title" />  
+      <v-toolbar-title v-text="title" />
 
-      <v-spacer></v-spacer> 
+      <v-spacer></v-spacer>
 
 
-      <v-btn v-if="this.$store.state.authUser[0].isLogged" color="deep-orange darken-1" @click="logout">Se deconnecter</v-btn>   
+      <v-btn v-if="this.$store.state.authUser[0].isLogged" color="deep-orange darken-1" @click="logout">Se deconnecter</v-btn>
 
     </v-app-bar>
 
@@ -45,7 +45,7 @@ export default {
     logout() {
       try {
         this.$store.dispatch('logout')
-        this.$router.push('login')
+        this.$router.go('login')
       } catch (e) {
         this.formError = e.message
       }
