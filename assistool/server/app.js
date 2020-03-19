@@ -121,7 +121,17 @@ router.post('/newTicket', jsonParser,function(req,res){
 
 router.post('/getTickets',jsonParser,function(req,res){
     let data = res.connection.parser.incoming.body;
-    con.query('SELECT * FROM tickets WHERE id_demandeur = ' + data.id_user +' OR id_technicien = '+ data.id_user,
+    con.query('SELECT * FROM tickets WHERE date_cloture IS NULL AND id_demandeur = ' + data.id_user +' OR id_technicien = '+ data.id_user,
+        function (err, results, fields){
+            if(err) throw err;
+            res.json(results)
+        }
+    )
+})
+
+router.post('/getTicketsClose',jsonParser,function(req,res){
+    let data = res.connection.parser.incoming.body;
+    con.query('SELECT * FROM tickets WHERE date_cloture IS NOT NULL AND id_demandeur = ' + data.id_user +' OR id_technicien = '+ data.id_user,
         function (err, results, fields){
             if(err) throw err;
             res.json(results)
