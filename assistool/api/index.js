@@ -1,14 +1,17 @@
 module.exports = (req, res, next) => {
     
     // Get the session ID:
-    console.log("session start...")
-    console.log("session id : "+req.session.id);
-    console.log("session logged : "+req.session.isLogged);
+    
  
     // Assign some value to session:
     if(req.session.isLogged == undefined) {
         req.session.user = [];
         req.session.isLogged = false;
+
+
+        console.log("session start...")
+        console.log("session id : "+req.session.id);
+        console.log("session logged : "+req.session.isLogged);
     }
     
     next();

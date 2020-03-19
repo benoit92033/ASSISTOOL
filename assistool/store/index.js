@@ -69,6 +69,11 @@ export const actions = {
         })
     },
 
+    async logout({commit,state}) {
+      await this.$axios.$post(`/api/logout`)
+      commit('logout')
+    },
+
     newTicket({commit}, newTicket) {
 
         return ( this.$axios.$post(`/api/newTicket`, newTicket).then(response => {
