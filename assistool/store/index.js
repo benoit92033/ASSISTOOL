@@ -160,9 +160,9 @@ export const actions = {
       })
   },
 
-  transfertoResp({ state, getters }, idTick) {
+  transferto({ state, getters }, TransferForm ) {
     return this.$axios
-      .$post(`/api/transfertoResp`, { id_ticket: idTick })
+      .$post(`/api/transferto`, TransferForm)
       .then(response => {
         if (response) {
           return true

@@ -76,7 +76,7 @@
           rounded
           large
           color="warning"
-          @click="transferer(ticket.id_ticket)"
+          @click="transferer(ticket)"
         >Transferer</v-btn>
       </div>
 
@@ -156,8 +156,8 @@ export default {
       this.getTickets(),
       this.getTicketsClose()
     },
-    transferer(idTicket) {
-      this.$store.dispatch('transfertoResp', idTicket)
+    transferer(ticket) {
+      this.$store.dispatch('transferto', ticket)
       this.getTickets(),
       this.getTicketsClose()
 
