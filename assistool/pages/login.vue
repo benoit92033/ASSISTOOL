@@ -53,8 +53,8 @@ export default {
                 case 'operateur':
                   this.$router.push('/operateur')
                   break
-                case 'Responsable':
-                  this.$router.push('/operateur')
+                case 'responsable':
+                  this.$router.push('/responsable')
                   break
               }
             })
