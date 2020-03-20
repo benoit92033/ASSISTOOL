@@ -71,13 +71,6 @@
           style="margin: 10px;"
           rounded
           large
-          color="primary"
-          @click="traiter(ticket.id_ticket)"
-        >Traiter</v-btn>
-        <v-btn
-          style="margin: 10px;"
-          rounded
-          large
           color="error"
           @click="fermer(ticket.id_ticket)"
         >Fermer</v-btn>
@@ -96,6 +89,14 @@
           color="light-green darken-2"
           @click="showPopupDate(ticket.id_ticket)"
         >Estimation date de fin</v-btn>
+        <v-btn
+        v-if="ticket.date_prevision !=null"
+          style="margin: 10px; pointer-events: none;"
+          rounded
+          large
+          color="light-green darken-2"
+          depressed
+        >{{ticket.date_prevision}}</v-btn>
       </div>
 
       <h1 class="display-2 font-weight-light">Tickets Fermés</h1>
@@ -216,10 +217,6 @@ export default {
     commenter(idTicket) {
       this.$store.commit('setTicketId', idTicket)
       this.$router.push('comment')
-    },
-    traiter(idTicket) {
-      console.log('traiter')
-      console.log(idTicket)
     },
     fermer(idTicket) {
       this.$store.dispatch('closeTicket', idTicket)
