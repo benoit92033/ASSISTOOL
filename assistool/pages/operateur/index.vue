@@ -29,14 +29,14 @@
         <div class="d-flex">
           <h2 class="font-weight-light">{{ ticket.titre }}</h2>
           <v-btn
-            v-if="ticket.urgence == 0"
+            v-if="ticket.urgence == 1 "
             depressed
             small
             style="margin: 10px; pointer-events: none;"
             color="success"
           >Pas urgent</v-btn>
           <v-btn
-            v-else-if="ticket.urgence == 1"
+            v-else-if="ticket.urgence == 2 || ticket.urgence == 3"
             depressed
             small
             style="margin: 10px; pointer-events: none;"
@@ -87,14 +87,14 @@
         <div class="d-flex">
           <h2 class="font-weight-light">{{ tc.titre }}</h2>
           <v-btn
-            v-if="tc.urgence == 0"
+            v-if="tc.urgence == 1"
             depressed
             small
             style="margin: 10px; pointer-events: none;"
             color="success"
           >Pas urgent</v-btn>
           <v-btn
-            v-else-if="tc.urgence == 1"
+            v-else-if="tc.urgence == 2 || tc.urgence == 3"
             depressed
             small
             style="margin: 10px; pointer-events: none;"
