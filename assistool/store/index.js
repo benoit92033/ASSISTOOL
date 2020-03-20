@@ -67,7 +67,7 @@ export const mutations = {
     state.authUser[0].isLogged = true
     state.authUser[0].user[0] = user
   },
-  checkOperatorsExist(state, results){
+  checkOperatorsExist(state, results) {
     state.operators = results
   }
 }
@@ -202,8 +202,6 @@ export const actions = {
   async nuxtServerInit({ dispatch, commit }, { req }) {
     // Get session ID:
     const sessionId = req.session.id
-
-    console.log(sessionId)
 
     if (req.session.isLogged == true) {
       commit('setSession', req.session.user[0])

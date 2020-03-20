@@ -159,9 +159,6 @@ export default {
     probleme: null,
 
     tickets: [
-      // {id:"0", title:"Ecran cassé", priority: "0"},
-      // {id:"1", title:"Bug souris", priority: "1"},
-      // {id:"2", title:"Bug microsoft word", priority: "2"}
     ],
     urgences: [1, 2, 3, 4, 5],
     problemes: ['Logiciel', 'Materiel', 'Utilisateur']
@@ -178,6 +175,11 @@ export default {
       } catch (e) {
         this.formError = e.message
       }
+    },
+
+    commenter(idTicket) {
+      this.$store.commit("setTicketId",idTicket)
+      this.$router.push("comment")
     },
 
     async validate() {
