@@ -139,6 +139,9 @@ th, td {
       </tbody>
     </v-simple-table>
   </v-container >
+  <v-alert type="success">
+      Ticket ouvert !
+    </v-alert>
   </v-layout>
 </template>
 <script>
@@ -161,7 +164,8 @@ export default {
     tickets: [
     ],
     urgences: [1, 2, 3, 4, 5],
-    problemes: ['Logiciel', 'Materiel', 'Utilisateur']
+    problemes: ['Logiciel', 'Materiel', 'Utilisateur'],
+    show : false,
   }),
 
   methods: {
@@ -201,7 +205,11 @@ export default {
          try {
           await this.$store.dispatch('newTicket', newTicket).then((response) => {
               this.getTickets();
+
               this.reset();
+              this.show = true ;
+              wait(3000)
+              this.show = false ;
             })
         } catch (e) {
           this.formError = e.message
