@@ -113,19 +113,19 @@ th, td {
       <tbody>
         <tr v-for="(ticket, i) in $store.state.tickets" :key="`${i}-${tickets.id_ticket}`">
           <td>{{ ticket.titre }}</td>
-          <v-td center>
-            <v-btn v-if="ticket.urgence == 1" depressed big style="margin: 10px;width: 100%; pointer-events: none;" color="success" >
+          <td center>
+            <v-btn v-if="ticket.urgence == 1" depressed large rounded style="margin: 10px;width: 100%; pointer-events: none;" color="success" >
               Pas urgent
             </v-btn>
 
-            <v-btn v-else-if="ticket.urgence == 2 || ticket.urgence == 3" depressed big style="margin: 10px;width: 100%; pointer-events: none;" color="warning" >
+            <v-btn v-else-if="ticket.urgence == 2 || ticket.urgence == 3" depressed large rounded style="margin: 10px;width: 100%; pointer-events: none;" color="warning" >
               Urgent
             </v-btn>
 
-            <v-btn v-else depressed large rounded style="width: 10;width: 100%; pointer-events: none;" color="error" >
+            <v-btn v-else depressed large rounded style="margin: 10px;width: 100%; pointer-events: none;" color="error" >
               Très Urgent
             </v-btn>
-          </v-td>
+          </td>
           <td>
             <v-btn
             style="margin: 10px;"

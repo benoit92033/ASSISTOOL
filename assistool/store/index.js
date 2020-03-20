@@ -7,6 +7,7 @@ export const state = () => ({
   ],
   tickets: [],
   ticketsClose: [],
+  ticketsCloseAll: [],
   id_Ticket: 0,
   comments: [],
   operators: []
@@ -50,6 +51,10 @@ export const mutations = {
     state.ticketsClose = results
   },
 
+  checkTicketsCloseAllExist(state, results) {
+    state.ticketsCloseAll = results
+  },
+
   checkCommentsExist(state, results) {
     state.comments = results
   },
@@ -90,39 +95,49 @@ export const actions = {
       })
   },
 
-  async logout({ commit, state }) {
-    await this.$axios.$post(`/api/logout`)
-    commit('logout')
-  },
+    async logout({commit,state}) {
+      await this.$axios.$post(`/api/logout`)
+      commit('logout')
+    },
 
+    newTicket({commit}, newTicket) {
 
-  getTickets({ commit, getters }) {
-    return this.$axios
-      .$post('/api/getTickets', {
-        id_user: getters.getUserInformations.id_user
-      })
-      .then(response => {
-        commit('checkTicketsExist', response)
-      })
-  },
+        return ( this.$axios.$post(`/api/newTicket`, newTicket).then(response => {
+            console.log("ticket store")
+        }) )
+    },
 
-  getTicketsClose({ commit, getters }) {
-    return this.$axios
-      .$post('/api/getTicketsClose', {
-        id_user: getters.getUserInformations.id_user
-      })
-      .then(response => {
-        commit('checkTicketsCloseExist', response)
-      })
-  },
+    getTickets({ commit, getters }) {
+      return this.$axios
+        .$post('/api/getTickets', {id_user: getters.getUserInformations.id_user})
+        .then(response => {
+          commit('checkTicketsExist', response)
+        })
+    },
 
-  getOperators({ commit, getters }, type) {
-    return this.$axios
-      .$post('/api/getOperators', { type: type })
-      .then(response => {
-        commit('checkOperatorsExist', response)
-      })
-  },
+    getTicketsClose({ commit, getters }) {
+      return this.$axios
+        .$post('/api/getTicketsClose', {id_user: getters.getUserInformations.id_user})
+        .then(response => {
+          commit('checkTicketsCloseExist', response)
+        })
+    },
+
+    getTicketsCloseAll({ commit, getters }) {
+      return this.$axios
+        .$post('/api/getTicketsCloseAll', {id_user: getters.getUserInformations.id_user})
+        .then(response => {
+          commit('checkTicketsCloseAllExist', response)
+        })
+    },
+
+    getOperators({ commit, getters },type) {
+      return this.$axios
+        .$post('/api/getOperators', {type: type})
+        .then(response => {
+          commit('checkOperatorsExist', response)
+        })
+    },
 
   getComments({ commit }) {
     return this.$axios

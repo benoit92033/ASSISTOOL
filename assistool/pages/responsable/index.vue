@@ -14,7 +14,7 @@
 <template>
   <v-layout>
     <v-flex>
-      <v-container fluid>
+      <v-container>
         <v-form ref="form" lazy-validation>
           <v-flex class="d-flex">
             <v-text-field v-model="searchtxt" label="Rechercher un ticket"></v-text-field>
@@ -23,6 +23,8 @@
         </v-form>
       </v-container>
 
+
+    <v-container v-if="tickets.length > 0">
       <h1 class="display-2 font-weight-light">Tickets à traiter</h1>
 
       <div v-for="(ticket, i) in FilteredTickets" :key="`${i}-${tickets.id_ticket}`" class="tickets" >
@@ -79,8 +81,10 @@
           @click="showPopup(ticket.id_ticket , ticket.type)"
         >Transferer</v-btn>
       </div>
+    </v-container>
 
 
+    <v-container v-if="ticketsClose.length > 0">
        <h1 class="display-2 font-weight-light">Tickets Fermés</h1>
 
       <div v-for="tc in ticketsClose" :key="tc.id_ticket" class="tickets" >
@@ -115,6 +119,7 @@
           <img src="v.png" />
         </div>
       </div>
+    </v-container>
 
     </v-flex>
 <v-row justify="center">
