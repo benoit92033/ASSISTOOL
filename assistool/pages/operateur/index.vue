@@ -111,7 +111,7 @@
 
 <script>
 export default {
-  middleware: 'auth',
+  middleware: ['auth','operator'],
   data: () => ({
     tickets: [],
     ticketsClose: [],

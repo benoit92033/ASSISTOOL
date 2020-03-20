@@ -144,7 +144,7 @@ th, td {
 </template>
 <script>
 export default {
-  middleware: 'auth',
+  middleware: ['auth','demandeur'],
 
   data: () => ({
     valid: true,
