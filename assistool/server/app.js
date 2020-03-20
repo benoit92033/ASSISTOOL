@@ -154,6 +154,16 @@ router.post('/getTicketsClose',jsonParser,function(req,res){
     )
 })
 
+router.post('/getTicketsCloseAll',jsonParser,function(req,res){
+  let data = res.connection.parser.incoming.body;
+  con.query('SELECT * FROM tickets WHERE date_cloture IS NOT NULL ',
+      function (err, results, fields){
+          if(err) throw err;
+          res.json(results)
+      }
+  )
+})
+
 router.post('/getOperators',jsonParser,function(req,res){
   let data = res.connection.parser.incoming.body;
   con.query('SELECT `id_user`, `nom`, `prenom`, `mail`, `role` FROM user u JOIN qualification q ON u.id_user = q.id_technicien WHERE q.qualification = ?',[

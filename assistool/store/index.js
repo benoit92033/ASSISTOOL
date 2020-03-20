@@ -7,6 +7,7 @@ export const state = () => ({
   ],
   tickets: [],
   ticketsClose: [],
+  ticketsCloseAll: [],
   id_Ticket: 0,
   comments: [],
   operators: []
@@ -48,6 +49,10 @@ export const mutations = {
 
   checkTicketsCloseExist(state, results) {
     state.ticketsClose = results
+  },
+
+  checkTicketsCloseAllExist(state, results) {
+    state.ticketsCloseAll = results
   },
 
   checkCommentsExist(state, results) {
@@ -115,6 +120,14 @@ export const actions = {
         .$post('/api/getTicketsClose', {id_user: getters.getUserInformations.id_user})
         .then(response => {
           commit('checkTicketsCloseExist', response)
+        })
+    },
+
+    getTicketsCloseAll({ commit, getters }) {
+      return this.$axios
+        .$post('/api/getTicketsCloseAll', {id_user: getters.getUserInformations.id_user})
+        .then(response => {
+          commit('checkTicketsCloseAllExist', response)
         })
     },
 
