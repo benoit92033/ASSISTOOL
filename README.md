@@ -22,7 +22,7 @@ Il y a 3 catégorie d'utilisateurs :
 | benoit@assistool.com | benoit | Logiciel, Utilisateur |
 
 
-  - Le responsable,ont le même rôle que les opérateurs mais peut acceder aux statistiques.
+  - Le responsable a le même rôle que les opérateurs mais peut acceder aux statistiques.
 
 | Email | Password |
 | ------ | ------ |
