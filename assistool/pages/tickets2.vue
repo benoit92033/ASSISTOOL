@@ -35,12 +35,12 @@ th, td {
   padding: 10px 20px;
 }
 */
-.AlertTicket {
+.AlertTicket{
   position: fixed;
   top: 12%;
   left: 70%;
   width: 20%;
-  padding-top: 2%;
+  padding-top:2%;
   padding-bottom: 2%;
   font-weight: bold;
 }
@@ -48,7 +48,8 @@ th, td {
 
 <template>
   <v-layout row justify-center>
-    <v-container class="mb-6">
+
+  <v-container class="mb-6">
       <p align="center" class="display-3 font-weight-light">Nouveau ticket</p>
       <p>{{ $store.state.authUser[0].username }}</p>
 
@@ -101,79 +102,60 @@ th, td {
           ></v-textarea>
 
           <v-flex class="d-flex justify-center mb-6">
-            <v-btn
-              style="margin: 10px;"
-              x-large
-              :disabled="!valid"
-              color="success"
-              @click="validate"
-            >Envoyer</v-btn>
+            <v-btn style="margin: 10px;" x-large :disabled="!valid" color="success" @click="validate">Envoyer</v-btn>
             <v-btn style="margin: 10px;" x-large color="error" @click="reset">Annuler</v-btn>
           </v-flex>
         </v-form>
       </v-container>
     </v-container>
 
-    <v-container class="mb-6">
+ <v-container class="mb-6">
       <p align="center" class="display-3 font-weight-light">Ticket en cours</p>
-      <v-simple-table fluid align="center">
-        <thead>
-          <tr>
-            <th>Titre</th>
-            <th>Urgence</th>
-            <th>Action</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr v-for="(ticket, i) in $store.state.tickets" :key="`${i}-${tickets.id_ticket}`">
-            <td>{{ ticket.titre }}</td>
-            <td center>
-              <v-btn
-                v-if="ticket.urgence == 1"
-                depressed
-                large
-                rounded
-                style="margin: 10px;width: 100%; pointer-events: none;"
-                color="success"
-              >Pas urgent</v-btn>
+    <v-simple-table fluid align="center">
+      <thead>
+        <tr>
+          <th>Titre</th>
+          <th>Urgence</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr v-for="(ticket, i) in $store.state.tickets" :key="`${i}-${tickets.id_ticket}`">
+          <td>{{ ticket.titre }}</td>
+          <td center>
+            <v-btn v-if="ticket.urgence == 1" depressed large rounded style="margin: 10px;width: 100%; pointer-events: none;" color="success" >
+              Pas urgent
+            </v-btn>
 
-              <v-btn
-                v-else-if="ticket.urgence == 2 || ticket.urgence == 3"
-                depressed
-                large
-                rounded
-                style="margin: 10px;width: 100%; pointer-events: none;"
-                color="warning"
-              >Urgent</v-btn>
+            <v-btn v-else-if="ticket.urgence == 2 || ticket.urgence == 3" depressed large rounded style="margin: 10px;width: 100%; pointer-events: none;" color="warning" >
+              Urgent
+            </v-btn>
 
-              <v-btn
-                v-else
-                depressed
-                large
-                rounded
-                style="margin: 10px;width: 100%; pointer-events: none;"
-                color="error"
-              >Très Urgent</v-btn>
-            </td>
-            <td>
-              <v-btn
-                style="margin: 10px;"
-                rounded
-                large
-                color="primary"
-                @click="commenter(ticket.id_ticket)"
-              >Commenter</v-btn>
-            </td>
-          </tr>
-        </tbody>
-      </v-simple-table>
-    </v-container>
-    <v-alert class="AlertTicket" type="success" v-if="this.show">Ticket ouvert !</v-alert>
+            <v-btn v-else depressed large rounded style="margin: 10px;width: 100%; pointer-events: none;" color="error" >
+              Très Urgent
+            </v-btn>
+          </td>
+          <td>
+            <v-btn
+            style="margin: 10px;"
+            rounded
+            large
+            color="primary"
+            @click="commenter(ticket.id_ticket)"
+          >Commenter</v-btn>
+          </td>
+        </tr>
+      </tbody>
+    </v-simple-table>
+  </v-container >
+  <!-- <v-alert class="AlertTicket" type="success">
+      Ticket ouvert !
+    </v-alert> -->
   </v-layout>
 </template>
 <script>
 export default {
-  middleware: ['auth', 'demandeur'],
+  middleware: ['auth','demandeur'],
 
   data: () => ({
     valid: true,
@@ -188,37 +170,40 @@ export default {
 
     probleme: null,
 
-    tickets: [],
+    tickets: [
+    ],
     urgences: [1, 2, 3, 4, 5],
     problemes: ['Logiciel', 'Materiel', 'Utilisateur'],
-    show: false
+    show : false,
   }),
 
   methods: {
     async getTickets() {
       try {
-        await this.$store.dispatch('getTickets', {}).then(response => {
-          // seulement si les logins sont bons
-        })
-        console.log(tickets)
+
+        await this.$store.dispatch('getTickets', {
+          }).then((response) => { // seulement si les logins sont bons
+          })
+          console.log(tickets)
       } catch (e) {
         this.formError = e.message
       }
     },
 
     commenter(idTicket) {
-      this.$store.commit('setTicketId', idTicket)
-      this.$router.push('comment')
+      this.$store.commit("setTicketId",idTicket)
+      this.$router.push("comment")
     },
 
     async validate() {
-      let user = this.$store.state.authUser[0].user[0]
+
+      let user = this.$store.state.authUser[0].user[0];
 
       if (this.$refs.form.validate()) {
         this.snackbar = true
 
         let newTicket = {
-          id_user: user.id_user,
+          id_user : user.id_user,
           title: this.title,
           poste: this.poste,
           priority: this.urgence,
@@ -226,31 +211,28 @@ export default {
           description: this.description
         }
 
-        // try {
-        //   await this.$store.dispatch('newTicket', newTicket).then(response => {
-        //     this.getTickets()
+         try {
+          await this.$store.dispatch('newTicket', newTicket).then((response) => {
+              this.getTickets();
 
-        //     this.reset()
-        //   })
-        // } catch (e) {
-        //   this.formError = e.message
-        // }
-        console.log("resultalt")
-      console.log(this.show)
-      this.show = true
-      console.log(this.show)
-      setTimeout(this.show = false,3000);
-      console.log(this.show)
-
+              this.reset();
+              this.show = true ;
+              wait(3000)
+              this.show = false ;
+            })
+        } catch (e) {
+          this.formError = e.message
+        }
       }
-
     },
     reset() {
       this.$refs.form.reset()
-    }
+    },
+
+
   },
   created() {
-    this.getTickets()
-  }
+      this.getTickets();
+    }
 }
 </script>

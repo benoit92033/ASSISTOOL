@@ -84,22 +84,18 @@ router.post('/newTicket', jsonParser, function(req, res) {
     'select id_user from user u ' +
     'left join tickets t ON u.id_user = t.id_technicien ' +
     'join qualification q on u.id_user = q.id_technicien ' +
-    "where qualification = '" +
-    data.probleme +
-    "' and t.id_ticket IS NULL"
+    'where qualification = ? and t.id_ticket IS NULL'
 
   let rqt2 =
     'select id_user, count(*) as count from user u ' +
     'left join tickets t ON u.id_user = t.id_technicien ' +
     'join qualification q on u.id_user = q.id_technicien ' +
-    "where qualification = '" +
-    data.probleme +
-    "' group by 1 order by count asc"
+    'where qualification = ? group by 1 order by count asc'
 
-  con.query(rqt, function(err, results, fields) {
+  con.query(rqt, [data.probleme], function(err, results, fields) {
     //if(err) throw err;
     if (results.length == 0) {
-      con.query(rqt2, function(err, results, fields) {
+      con.query(rqt2, [data.probleme], function(err, results, fields) {
         //if(err) throw err;
         if (results.length == 0) {
           console.log(

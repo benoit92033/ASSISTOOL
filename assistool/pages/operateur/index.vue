@@ -206,12 +206,13 @@ export default {
     },
 
     showPopupDate(idTick) {
-      this.idTicket = idTick
-      this.dialog = true
+      this.idTicket = idTick;
+      this.dialog = true;
     },
     envoyerDate() {
-      this.$store.dispatch('setDatePrevision', {id_ticket: this.idTicket , date_prevision: this.format(this.due)})
-      this.dialog = false
+      this.$store.dispatch('setDatePrevision', {id_ticket: this.idTicket , date_prevision: this.format(this.due)});
+      this.dialog = false;
+      this.getTickets();
     },
 
     commenter(idTicket) {
@@ -246,7 +247,8 @@ export default {
     }
   },
   created() {
-    this.getTickets(), this.getTicketsClose()
+    this.getTickets(),
+    this.getTicketsClose()
   },
 
   computed: {
