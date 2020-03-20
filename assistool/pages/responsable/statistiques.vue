@@ -68,13 +68,7 @@
 
 <script>
 
-import ChartDoughnut from "@/components/chart-doughnut";
-
 export default {
-
-components: {
-    ChartDoughnut
-  },
 
   middleware: ['auth','responsable'],
 
