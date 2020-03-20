@@ -17,10 +17,9 @@
 
 
     <h1 class="display-2 font-weight-light">Tickets Fermés : {{ ticketsClose.length }}</h1>
-
+    <br>
     <div class="card">
     <div class="card-body">
-      <h2 class="card-title">Tickets fermés</h2>
     </div>
 
     <div class="card-img-bottom">
