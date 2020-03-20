@@ -35,6 +35,15 @@ th, td {
   padding: 10px 20px;
 }
 */
+.AlertTicket{
+  position: fixed;
+  top: 12%;
+  left: 70%;
+  width: 20%;
+  padding-top:2%;
+  padding-bottom: 2%;
+  font-weight: bold;
+}
 </style>
 
 <template>
@@ -139,7 +148,7 @@ th, td {
       </tbody>
     </v-simple-table>
   </v-container >
-  <v-alert type="success">
+  <v-alert class="AlertTicket" type="success">
       Ticket ouvert !
     </v-alert>
   </v-layout>
