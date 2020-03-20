@@ -8,7 +8,8 @@ export const state = () => ({
   tickets: [],
   ticketsClose: [],
   id_Ticket: 0,
-  comments: []
+  comments: [],
+  operators: []
 })
 
 export const getters = {
@@ -60,6 +61,9 @@ export const mutations = {
   setSession(state, user) {
     state.authUser[0].isLogged = true
     state.authUser[0].user[0] = user
+  },
+  checkOperatorsExist(state, results){
+    state.operators = results
   }
 }
 
@@ -114,6 +118,14 @@ export const actions = {
         })
     },
 
+    getOperators({ commit, getters },type) {
+      return this.$axios
+        .$post('/api/getOperators', {type: type})
+        .then(response => {
+          commit('checkOperatorsExist', response)
+        })
+    },
+
   getComments({ commit }) {
     return this.$axios
       .$post('/api/getComments', { id_ticket: this.state.id_Ticket })
@@ -153,6 +165,18 @@ export const actions = {
   transfertoResp({ state, getters }, idTick) {
     return this.$axios
       .$post(`/api/transfertoResp`, { id_ticket: idTick })
+      .then(response => {
+        if (response) {
+          return true
+        } else {
+          return false
+        }
+      })
+  },
+
+  transferToOp({ state, getters }, TransferForm) {
+    return this.$axios
+      .$post(`/api/transfertoOp`, TransferForm)
       .then(response => {
         if (response) {
           return true

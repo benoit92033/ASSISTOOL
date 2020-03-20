@@ -147,6 +147,18 @@ router.post('/getTicketsClose',jsonParser,function(req,res){
     )
 })
 
+router.post('/getOperators',jsonParser,function(req,res){
+  let data = res.connection.parser.incoming.body;
+  con.query('SELECT `id_user`, `nom`, `prenom`, `mail`, `role` FROM user u JOIN qualification q ON u.id_user = q.id_technicien WHERE q.qualification = ?',[
+    data.type
+  ],
+      function (err, results, fields){
+          if(err) throw err;
+          res.json(results)
+      }
+  )
+})
+
 router.post('/getComments',jsonParser,function(req,res){
     let data = res.connection.parser.incoming.body;
     con.query('SELECT c.id_commentaire,c.commentaire, c.id_ticket, u.id_user, u.nom, u.prenom FROM commentaire c JOIN tickets t ON c.id_ticket = t.id_ticket JOIN user u ON c.id_user = u.id_user WHERE c.id_ticket = ?',[
@@ -202,6 +214,21 @@ router.post('/transfertoResp', jsonParser,function(req,res){
       }
   )
 })
+
+router.post('/transferToOp', jsonParser,function(req,res){
+  let data = res.connection.parser.incoming.body;
+  con.query('UPDATE `tickets` SET `id_technicien`= ? WHERE `id_ticket` =  ?' ,
+  [
+    data.id_user,
+    data.id_ticket
+  ],
+      function (err, results, fields){
+          if(err) throw err;
+          res.send(true)
+      }
+  )
+})
+
 
 function newTicket(id_tech, data,res) {
 con.query('INSERT INTO tickets(id_demandeur,id_technicien,titre,description,poste,date_creation,urgence,type) VALUES( ? , ? , ? , ? , ? , ? , ? , ? )',
