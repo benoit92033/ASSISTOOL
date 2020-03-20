@@ -97,14 +97,14 @@
           <img src="v.png" />
         </div>
       </div>
-      
+
     </v-flex>
 
-    
+
 
   </v-layout>
 
-       
+
 
 </template>
 
@@ -153,12 +153,14 @@ export default {
     },
     fermer(idTicket) {
       this.$store.dispatch('closeTicket', idTicket)
-      console.log('fermer')
-      console.log(idTicket)
+      this.getTickets(),
+      this.getTicketsClose()
     },
     transferer(idTicket) {
       this.$store.dispatch('transfertoResp', idTicket)
-      this.getTickets() ;
+      this.getTickets(),
+      this.getTicketsClose()
+
     }
   },
   created() {
