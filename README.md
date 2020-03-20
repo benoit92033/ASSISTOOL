@@ -4,7 +4,7 @@ Assistool, Le premier outil de maintenance en France
 
 ### Comment ça marche ?
 
-Il y à 3 catégorie d'utilisateurs :
+Il y a 3 catégorie d'utilisateurs :
 
   - Les demandeurs, ce sont les utilisateurs rencontrant un problème, qui ouvrent un ticket. Ils peuvent voir leurs tickets ouverts et les commenter.
 
