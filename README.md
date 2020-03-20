@@ -4,16 +4,16 @@ Assistool, Le premier outil de maintenance en France
 
 ### Comment ça marche ?
 
-Il y à 3 catégorie d'utilisateurs :
+Il y a 3 catégorie d'utilisateurs :
 
-  - Les demandeurs, ce sont les utilisateurs rencontrant un problème, qui ouvrent un ticket. Ils peuvent voir leurs tickets ouverts et les commenter.
+  - Les demandeurs sont les utilisateurs rencontrant un problème, qui ouvrent un ticket. Ils peuvent voir leurs tickets ouverts et les commenter.
 
 | Email | Password |
 | ------ | ------ |
 | antoine@assistool.com | antoine |
 
 
-  - Les opérateurs, ce sont les techniciens chargés de résoudre ce problème, ils ne peuvent résoudre que les problèmes en rapport avec leurs qualifications. Il peuvent commenter / transferer / fermer un ticket.
+  - Les opérateurs sont les techniciens chargés de résoudre ce problème, ils ne peuvent résoudre que les problèmes en rapport avec leurs qualifications. Il peuvent commenter / transferer / fermer un ticket.
 
 | Email | Password | Qualifications |
 | ------ | ------ | - |
@@ -22,7 +22,7 @@ Il y à 3 catégorie d'utilisateurs :
 | benoit@assistool.com | benoit | Logiciel, Utilisateur |
 
 
-  - Le responsable, même rôle que les opérateurs mais peut acceder aux statistiques.
+  - Le responsable a le même rôle que les opérateurs mais peut acceder aux statistiques.
 
 | Email | Password |
 | ------ | ------ |
