@@ -113,19 +113,19 @@ th, td {
       <tbody>
         <tr v-for="(ticket, i) in $store.state.tickets" :key="`${i}-${tickets.id_ticket}`">
           <td>{{ ticket.titre }}</td>
-          <v-td center>
-            <v-btn v-if="ticket.urgence == 1" depressed big style="margin: 10px;width: 100%; pointer-events: none;" color="success" >
+          <td center>
+            <v-btn v-if="ticket.urgence == 1" depressed large rounded style="margin: 10px;width: 100%; pointer-events: none;" color="success" >
               Pas urgent
             </v-btn>
 
-            <v-btn v-else-if="ticket.urgence == 2 || ticket.urgence == 3" depressed big style="margin: 10px;width: 100%; pointer-events: none;" color="warning" >
+            <v-btn v-else-if="ticket.urgence == 2 || ticket.urgence == 3" depressed large rounded style="margin: 10px;width: 100%; pointer-events: none;" color="warning" >
               Urgent
             </v-btn>
 
-            <v-btn v-else depressed large rounded style="width: 10;width: 100%; pointer-events: none;" color="error" >
+            <v-btn v-else depressed large rounded style="margin: 10px;width: 100%; pointer-events: none;" color="error" >
               Très Urgent
             </v-btn>
-          </v-td>
+          </td>
           <td>
             <v-btn
             style="margin: 10px;"
@@ -139,6 +139,9 @@ th, td {
       </tbody>
     </v-simple-table>
   </v-container >
+  <v-alert type="success">
+      Ticket ouvert !
+    </v-alert>
   </v-layout>
 </template>
 <script>
@@ -161,7 +164,8 @@ export default {
     tickets: [
     ],
     urgences: [1, 2, 3, 4, 5],
-    problemes: ['Logiciel', 'Materiel', 'Utilisateur']
+    problemes: ['Logiciel', 'Materiel', 'Utilisateur'],
+    show : false,
   }),
 
   methods: {
@@ -201,6 +205,11 @@ export default {
          try {
           await this.$store.dispatch('newTicket', newTicket).then((response) => {
               this.getTickets();
+
+              this.reset();
+              this.show = true ;
+              wait(3000)
+              this.show = false ;
             })
         } catch (e) {
           this.formError = e.message
