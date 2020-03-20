@@ -58,7 +58,6 @@ export default {
 
   computed:{
       comment(){
-        console.log("comment")
           return this.$route.path === '/comment'
       }
   }

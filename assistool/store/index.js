@@ -62,7 +62,7 @@ export const mutations = {
     state.authUser[0].isLogged = true
     state.authUser[0].user[0] = user
   },
-  checkOperatorsExist(state, results){
+  checkOperatorsExist(state, results) {
     state.operators = results
   }
 }
@@ -90,41 +90,39 @@ export const actions = {
       })
   },
 
-    async logout({commit,state}) {
-      await this.$axios.$post(`/api/logout`)
-      commit('logout')
-    },
+  async logout({ commit, state }) {
+    await this.$axios.$post(`/api/logout`)
+    commit('logout')
+  },
 
-    newTicket({commit}, newTicket) {
 
-        return ( this.$axios.$post(`/api/newTicket`, newTicket).then(response => {
-            console.log("ticket store")
-        }) )
-    },
+  getTickets({ commit, getters }) {
+    return this.$axios
+      .$post('/api/getTickets', {
+        id_user: getters.getUserInformations.id_user
+      })
+      .then(response => {
+        commit('checkTicketsExist', response)
+      })
+  },
 
-    getTickets({ commit, getters }) {
-      return this.$axios
-        .$post('/api/getTickets', {id_user: getters.getUserInformations.id_user})
-        .then(response => {
-          commit('checkTicketsExist', response)
-        })
-    },
+  getTicketsClose({ commit, getters }) {
+    return this.$axios
+      .$post('/api/getTicketsClose', {
+        id_user: getters.getUserInformations.id_user
+      })
+      .then(response => {
+        commit('checkTicketsCloseExist', response)
+      })
+  },
 
-    getTicketsClose({ commit, getters }) {
-      return this.$axios
-        .$post('/api/getTicketsClose', {id_user: getters.getUserInformations.id_user})
-        .then(response => {
-          commit('checkTicketsCloseExist', response)
-        })
-    },
-
-    getOperators({ commit, getters },type) {
-      return this.$axios
-        .$post('/api/getOperators', {type: type})
-        .then(response => {
-          commit('checkOperatorsExist', response)
-        })
-    },
+  getOperators({ commit, getters }, type) {
+    return this.$axios
+      .$post('/api/getOperators', { type: type })
+      .then(response => {
+        commit('checkOperatorsExist', response)
+      })
+  },
 
   getComments({ commit }) {
     return this.$axios
@@ -189,8 +187,6 @@ export const actions = {
   async nuxtServerInit({ dispatch, commit }, { req }) {
     // Get session ID:
     const sessionId = req.session.id
-
-    console.log(sessionId)
 
     if (req.session.isLogged == true) {
       commit('setSession', req.session.user[0])

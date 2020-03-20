@@ -63,25 +63,18 @@ router.post('/getUser', jsonParser, function(req,res){
     ],
         function (err, results, fields){
             if(err) throw err;
-
-            //console.log(results)
-            //console.log(data)
-          
             if(results.length != 0) {
 
               if(results[0].password == data.password) {
 
                 req.session.user[0] = results[0];
                 req.session.isLogged = true;
-    
-                console.log("ROUTER POST")
-                console.log(req.session)
-    
+
                 res.json(results[0]);
-    
+
                 } else { res.json(null); }
             } else { res.json(null); }
-           
+
         }
     )
 })
@@ -181,7 +174,6 @@ router.post('/getComments',jsonParser,function(req,res){
 router.post('/closeTicket', jsonParser,function(req,res){
     let data = res.connection.parser.incoming.body;
 
-    console.log(GetCurrentDate())
     con.query('UPDATE `tickets` SET `date_cloture` = "'+GetCurrentDate()+'" WHERE `tickets`.`id_ticket` = ?',
     [
       data.id_ticket
@@ -275,19 +267,3 @@ app.use('/api', router)
 
 module.exports = app
 
-
-/*
-
-      // app.get('/postComments/',function(req,res){
-      //   console.log("INSERT INTO commentaire (id_user,id_ticket,commentaire) VALUES (" + req.query.id_user + " , " + req.query.id_ticket +" , '" + req.query.com +"'  ) ")
-      //   con.query("INSERT INTO commentaire (id_user,id_ticket,commentaire) VALUES (" + req.query.id_user + " , " + req.query.id_ticket +" , '" + req.query.com +"'  ) ",
-      //       function (err, results, fields){
-      //           if(err) throw err;
-      //           res.json(results)
-      //       }
-      //   )
-      // })
-
-
-
-  */
