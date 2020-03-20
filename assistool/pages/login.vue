@@ -24,12 +24,12 @@
 export default {
   data: () => ({
     valid: true,
-    email: 'admin@admin.com',
+    email: '',
     emailRules: [
       v => !!v || "L'e-mail doit etre renseignée",
       v => /.+@.+\..+/.test(v) || "L'e-mail n'est pas correcte"
     ],
-    password: 'admin'
+    password: ''
   }),
 
   methods: {
