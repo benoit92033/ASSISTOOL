@@ -116,6 +116,9 @@ export default {
         let diffTime = Math.abs(date2 - date1);
         let diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24)); 
 
+        if(diffDays==0)
+            diffDays=1;
+
         return diffDays; 
     },
 
