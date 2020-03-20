@@ -20,7 +20,7 @@
       <v-spacer></v-spacer>
 
       <v-flex v-if="this.$store.state.authUser[0].isLogged" align-end>
-        {{ this.$store.state.authUser[0].user[0].mail }}    
+        {{ this.$store.state.authUser[0].user[0].nom }} {{ this.$store.state.authUser[0].user[0].prenom }}     
         <v-btn color="deep-orange darken-1" @click="logout">Se deconnecter</v-btn>
       </v-flex>
 
