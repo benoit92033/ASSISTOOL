@@ -201,6 +201,7 @@ export default {
          try {
           await this.$store.dispatch('newTicket', newTicket).then((response) => {
               this.getTickets();
+              this.reset();
             })
         } catch (e) {
           this.formError = e.message

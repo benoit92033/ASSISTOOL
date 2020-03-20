@@ -64,7 +64,7 @@ export default {
           this.comments = this.$store.state.comments
           this.idTicket = this.$store.state.id_Ticket
           this.idUser = this.$store.state.authUser[0].user[0].id_user
-          console.log(this.comments)
+          this.$refs.form.reset()
         })
       } catch (e) {
         this.formError = e.message
