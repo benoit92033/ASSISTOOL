@@ -78,6 +78,13 @@
           color="warning"
           @click="transferer(ticket.id_ticket)"
         >Transferer</v-btn>
+        <v-btn
+          style="margin: 10px;"
+          rounded
+          large
+          color="light-green darken-2"
+          @click="showPopupDate()"
+        >Estimation date de fin</v-btn>
       </div>
 
 
@@ -101,6 +108,39 @@
     </v-flex>
 
 
+ <v-row justify="center">
+    <v-dialog v-model="dialog" persistent max-width="500px">
+      <v-card>
+        <v-card-title class="headline">Estimation de la date de fin :</v-card-title>
+
+        <v-menu max-width="290">
+          <template v-slot:activator="{ on }">
+            <v-text-field :value="due" label="Date de prévision" prepend-icon="mdi-calendar-range" v-on="on"></v-text-field>
+          </template>
+          <v-row justify="center">
+            <v-date-picker
+              v-model="due"
+              year-icon="mdi-calendar-blank"
+              prev-icon="mdi-skip-previous"
+              next-icon="mdi-skip-next"
+              color="green darken-1"
+              header-color="green darken-1">
+            </v-date-picker>
+          </v-row>
+</v-menu>
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn color="red darken-2" text @click="dialog = false">Annuler</v-btn>
+          <v-btn color="green darken-2" text @click="envoyerDate()">Sauvegarder</v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
+  </v-row>
+
+
+
+
+
 
   </v-layout>
 
@@ -110,12 +150,15 @@
 
 
 <script>
+
 export default {
   middleware: ['auth','operator'],
   data: () => ({
     tickets: [],
     ticketsClose: [],
-    searchtxt: ''
+    searchtxt: '',
+    dialog: false,
+    due: null
   }),
 
   methods: {
@@ -141,11 +184,19 @@ export default {
 
     },
 
+    showPopupDate()
+    {
+      this.dialog = true ;
+    },
+    envoyerDate()
+    {
+      console.log(this.due)
+      this.dialog = false ;
+    },
+
     commenter(idTicket) {
       this.$store.commit("setTicketId",idTicket)
       this.$router.push("comment")
-
-
     },
     traiter(idTicket) {
       console.log('traiter')
