@@ -64,17 +64,24 @@ router.post('/getUser', jsonParser, function(req,res){
         function (err, results, fields){
             if(err) throw err;
 
-            if(results[0].password == data.password) {
+            //console.log(results)
+            //console.log(data)
+          
+            if(results.length != 0) {
 
-            req.session.user[0] = results[0];
-            req.session.isLogged = true;
+              if(results[0].password == data.password) {
 
-            console.log("ROUTER POST")
-            console.log(req.session)
-
-            res.json(results[0]);
-
+                req.session.user[0] = results[0];
+                req.session.isLogged = true;
+    
+                console.log("ROUTER POST")
+                console.log(req.session)
+    
+                res.json(results[0]);
+    
+                } else { res.json(null); }
             } else { res.json(null); }
+           
         }
     )
 })

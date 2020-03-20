@@ -38,51 +38,10 @@ th, td {
 </style>
 
 <template>
-  <v-layout row justify-space-between>
+  <v-layout row justify-center>
 
-    <v-flex xs6 text-xs-left>
-
-    <v-simple-table >
-      <thead>
-        <tr>
-          <th>Titre</th>
-          <th>Urgence</th>
-          <th>Action</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr v-for="(ticket, i) in $store.state.tickets" :key="`${i}-${tickets.id_ticket}`">
-          <td>{{ ticket.titre }}</td>
-          <v-td center>
-            <v-btn v-if="ticket.urgence == 1" depressed big style="margin: 10px;width: 100%; pointer-events: none;" color="success" >
-              Pas urgent
-            </v-btn>
-
-            <v-btn v-else-if="ticket.urgence == 2 || ticket.urgence == 3" depressed big style="margin: 10px;width: 100%; pointer-events: none;" color="warning" >
-              Urgent
-            </v-btn>
-
-            <v-btn v-else depressed large rounded style="width: 10;width: 100%; pointer-events: none;" color="error" >
-              Très Urgent
-            </v-btn>
-          </v-td>
-          <td>
-            <v-btn
-            style="margin: 10px;"
-            rounded
-            large
-            color="primary"
-            @click="commenter(ticket.id_ticket)"
-          >Commenter</v-btn>
-          </td>
-        </tr>
-      </tbody>
-    </v-simple-table>
-
-    </v-flex>
-
-    <v-flex xs5>
-      <p class="display-3 font-weight-light">Nouveau ticket</p>
+  <v-container class="mb-6">
+      <p align="center" class="display-3 font-weight-light">Nouveau ticket</p>
       <p>{{ $store.state.authUser[0].username }}</p>
 
       <v-container fluid class="add-form">
@@ -133,18 +92,58 @@ th, td {
             auto-grow
           ></v-textarea>
 
-          <v-flex class="d-flex justify-space-around mb-6">
-            <v-btn :disabled="!valid" color="success" @click="validate">Envoyer</v-btn>
-            <v-btn color="error" @click="reset">Annuler</v-btn>
+          <v-flex class="d-flex justify-center mb-6">
+            <v-btn style="margin: 10px;" x-large :disabled="!valid" color="success" @click="validate">Envoyer</v-btn>
+            <v-btn style="margin: 10px;" x-large color="error" @click="reset">Annuler</v-btn>
           </v-flex>
         </v-form>
       </v-container>
-    </v-flex>
+    </v-container>
+
+ <v-container class="mb-6">
+      <p align="center" class="display-3 font-weight-light">Ticket en cours</p>
+    <v-simple-table fluid align="center">
+      <thead>
+        <tr>
+          <th>Titre</th>
+          <th>Urgence</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr v-for="(ticket, i) in $store.state.tickets" :key="`${i}-${tickets.id_ticket}`">
+          <td>{{ ticket.titre }}</td>
+          <v-td center>
+            <v-btn v-if="ticket.urgence == 1" depressed big style="margin: 10px;width: 100%; pointer-events: none;" color="success" >
+              Pas urgent
+            </v-btn>
+
+            <v-btn v-else-if="ticket.urgence == 2 || ticket.urgence == 3" depressed big style="margin: 10px;width: 100%; pointer-events: none;" color="warning" >
+              Urgent
+            </v-btn>
+
+            <v-btn v-else depressed large rounded style="width: 10;width: 100%; pointer-events: none;" color="error" >
+              Très Urgent
+            </v-btn>
+          </v-td>
+          <td>
+            <v-btn
+            style="margin: 10px;"
+            rounded
+            large
+            color="primary"
+            @click="commenter(ticket.id_ticket)"
+          >Commenter</v-btn>
+          </td>
+        </tr>
+      </tbody>
+    </v-simple-table>
+  </v-container >
   </v-layout>
 </template>
 <script>
 export default {
-  middleware: 'auth',
+  middleware: ['auth','demandeur'],
 
   data: () => ({
     valid: true,
