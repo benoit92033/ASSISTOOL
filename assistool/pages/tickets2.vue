@@ -1,4 +1,5 @@
 <style>
+/*
 .add-form {
   max-width: 30vw;
 }
@@ -33,15 +34,17 @@ th, td {
   min-width: 120px;
   padding: 10px 20px;
 }
-
+*/
 </style>
 
 <template>
-  <v-layout>
-    <table>
+  <v-layout row justify-space-between>
+
+    <v-flex xs6 text-xs-left>
+
+    <v-simple-table >
       <thead>
         <tr>
-          <th>ID</th>
           <th>Titre</th>
           <th>Urgence</th>
           <th>Action</th>
@@ -49,9 +52,20 @@ th, td {
       </thead>
       <tbody>
         <tr v-for="(ticket, i) in $store.state.tickets" :key="`${i}-${tickets.id_ticket}`">
-          <td>{{ ticket.id_ticket }}</td>
           <td>{{ ticket.titre }}</td>
-          <td>{{ ticket.urgence }}</td>
+          <v-td center>
+            <v-btn v-if="ticket.urgence == 1" depressed big style="margin: 10px;width: 100%; pointer-events: none;" color="success" >
+              Pas urgent
+            </v-btn>
+
+            <v-btn v-else-if="ticket.urgence == 2 || ticket.urgence == 3" depressed big style="margin: 10px;width: 100%; pointer-events: none;" color="warning" >
+              Urgent
+            </v-btn>
+
+            <v-btn v-else depressed large rounded style="width: 10;width: 100%; pointer-events: none;" color="error" >
+              Très Urgent
+            </v-btn>
+          </v-td>
           <td>
             <v-btn
             style="margin: 10px;"
@@ -63,9 +77,11 @@ th, td {
           </td>
         </tr>
       </tbody>
-    </table>
+    </v-simple-table>
 
-    <v-flex class="text-center">
+    </v-flex>
+
+    <v-flex xs5>
       <p class="display-3 font-weight-light">Nouveau ticket</p>
       <p>{{ $store.state.authUser[0].username }}</p>
 

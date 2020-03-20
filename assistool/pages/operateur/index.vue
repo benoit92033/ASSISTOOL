@@ -86,27 +86,9 @@
       <div v-for="tc in ticketsClose" :key="tc.id_ticket" class="tickets" >
         <div class="d-flex">
           <h2 class="font-weight-light">{{ tc.titre }}</h2>
-          <v-btn
-            v-if="tc.urgence == 1"
-            depressed
-            small
-            style="margin: 10px; pointer-events: none;"
-            color="success"
-          >Pas urgent</v-btn>
-          <v-btn
-            v-else-if="tc.urgence == 2 || tc.urgence == 3"
-            depressed
-            small
-            style="margin: 10px; pointer-events: none;"
-            color="warning"
-          >Urgent</v-btn>
-          <v-btn
-            v-else
-            depressed
-            small
-            style="margin: 10px; pointer-events: none;"
-            color="error"
-          >Très Urgent</v-btn>
+          <v-btn v-if="tc.urgence == 1" depressed small style="margin: 10px; pointer-events: none;" color="success" >Pas urgent</v-btn>
+          <v-btn v-else-if="tc.urgence == 2 || tc.urgence == 3" depressed small style="margin: 10px; pointer-events: none;" color="warning" >Urgent</v-btn>
+          <v-btn v-else depressed small style="margin: 10px; pointer-events: none;" color="error" >Très Urgent</v-btn>
         </div>
         <div>
           <p>{{ tc.description }}</p>
