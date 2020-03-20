@@ -199,6 +199,18 @@ export const actions = {
       })
   },
 
+  setDatePrevision({ state, getters }, datadateprevision) {
+    return this.$axios
+      .$post(`/api/setdateprevision`, datadateprevision)
+      .then(response => {
+        if (response) {
+          return true
+        } else {
+          return false
+        }
+      })
+  },
+
   async nuxtServerInit({ dispatch, commit }, { req }) {
     // Get session ID:
     const sessionId = req.session.id

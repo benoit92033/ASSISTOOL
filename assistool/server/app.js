@@ -139,25 +139,27 @@ router.post('/getTicketsClose', jsonParser, function(req, res) {
   )
 })
 
-router.post('/getTicketsCloseAll',jsonParser,function(req,res){
-  let data = res.connection.parser.incoming.body;
-  con.query('SELECT * FROM tickets WHERE date_cloture IS NOT NULL ',
-      function (err, results, fields){
-          if(err) throw err;
-          res.json(results)
-      }
-  )
+router.post('/getTicketsCloseAll', jsonParser, function(req, res) {
+  let data = res.connection.parser.incoming.body
+  con.query('SELECT * FROM tickets WHERE date_cloture IS NOT NULL ', function(
+    err,
+    results,
+    fields
+  ) {
+    if (err) throw err
+    res.json(results)
+  })
 })
 
-router.post('/getOperators',jsonParser,function(req,res){
-  let data = res.connection.parser.incoming.body;
-  con.query('SELECT `id_user`, `nom`, `prenom`, `mail`, `role` FROM user u JOIN qualification q ON u.id_user = q.id_technicien WHERE q.qualification = ?',[
-    data.type
-  ],
-      function (err, results, fields){
-          if(err) throw err;
-          res.json(results)
-      }
+router.post('/getOperators', jsonParser, function(req, res) {
+  let data = res.connection.parser.incoming.body
+  con.query(
+    'SELECT `id_user`, `nom`, `prenom`, `mail`, `role` FROM user u JOIN qualification q ON u.id_user = q.id_technicien WHERE q.qualification = ?',
+    [data.type],
+    function(err, results, fields) {
+      if (err) throw err
+      res.json(results)
+    }
   )
 })
 
@@ -203,16 +205,11 @@ router.post('/postComments', jsonParser, function(req, res) {
 
 router.post('/transferto', jsonParser, function(req, res) {
   let data = res.connection.parser.incoming.body
-  let tempnbtransfer = data.nb_transfer +1 ;
+  let tempnbtransfer = data.nb_transfer + 1
   if (data.nb_transfer < 3) {
     con.query(
       'UPDATE `tickets` SET nb_transfer = ? ,`id_technicien`=(SELECT `id_user` FROM user u JOIN qualification q ON u.id_user = q.id_technicien  WHERE `role` = "operateur" AND q.qualification = ? AND id_technicien != ? ORDER BY RAND ( )  LIMIT 1 ) WHERE `id_ticket` =  ? ',
-      [
-        tempnbtransfer,
-        data.type,
-        data.id_technicien,
-        data.id_ticket
-      ],
+      [tempnbtransfer, data.type, data.id_technicien, data.id_ticket],
       function(err, results, fields) {
         if (err) throw err
         res.send(true)
@@ -235,6 +232,18 @@ router.post('/transferToOp', jsonParser, function(req, res) {
   con.query(
     'UPDATE `tickets` SET `id_technicien`= ? WHERE `id_ticket` =  ?',
     [data.id_user, data.id_ticket],
+    function(err, results, fields) {
+      if (err) throw err
+      res.send(true)
+    }
+  )
+})
+
+router.post('/setdateprevision', jsonParser, function(req, res) {
+  let data = res.connection.parser.incoming.body
+  con.query(
+    'UPDATE `tickets` SET `date_prevision`= ? WHERE `id_ticket` =  ?',
+    [data.date_prevision, data.id_ticket],
     function(err, results, fields) {
       if (err) throw err
       res.send(true)
